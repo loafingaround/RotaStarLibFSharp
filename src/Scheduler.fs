@@ -4,5 +4,5 @@ module Scheduler =
 
     open Types
 
-    let CalculateSchedule (shifts: Shift[]) (staff: Person[]) =
+    let CalculateIntialSchedule (shifts: Shift[]) (staff: Person[]) =
        shifts
