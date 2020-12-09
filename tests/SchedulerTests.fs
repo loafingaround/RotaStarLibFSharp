@@ -43,3 +43,69 @@ let ``outputs same as input``() =
 
     let staff: Person[] = [||]
     test <@ (CalculateIntialSchedule shifts staff) = shifts @>
+
+[<Fact>]
+let ``inverts shift correctly``() =
+    let shifts: Shift[] = [|
+        {
+            Name = "Assassins"
+            Start = new DateTime(2021, 3, 4, 18, 30, 00)
+            End = new DateTime(2021, 3, 4, 21, 30, 00)
+            Staff = [|
+                {
+                    Forename = "Nancey"
+                    Surname = "Fahy"
+                    UnavailableDates = Array.empty
+                    Shifts = Array.empty
+                }
+                {
+                    Forename = "Cheryl"
+                    Surname = "Pentha"
+                    UnavailableDates = Array.empty
+                    Shifts = Array.empty
+                }
+            |]
+        }
+        {
+            Name = "Dixie Swim Club"
+            Start = new DateTime(2021, 2, 15, 18, 30, 00)
+            End = new DateTime(2021, 2, 15, 21, 30, 00)
+            Staff = [|
+                {
+                    Forename = "Cheryl"
+                    Surname = "Pentha"
+                    UnavailableDates = Array.empty
+                    Shifts = Array.empty
+                }
+                {
+                    Forename = "Britte"
+                    Surname = "Lowery"
+                    UnavailableDates = Array.empty
+                    Shifts = Array.empty
+                }
+            |]
+        }
+    |]
+
+    let expected = set [|
+        {
+            Forename = "Nancey"
+            Surname = "Fahy"
+            UnavailableDates = Array.empty
+            Shifts = Array.empty
+        }
+        {
+            Forename = "Cheryl"
+            Surname = "Pentha"
+            UnavailableDates = Array.empty
+            Shifts = Array.empty
+        }
+        {
+            Forename = "Britte"
+            Surname = "Lowery"
+            UnavailableDates = Array.empty
+            Shifts = Array.empty
+        }
+    |]
+
+    test <@ (invertShifts shifts) = expected @>
