@@ -6,39 +6,64 @@ open Scheduling.Scheduler
 open Scheduling.Types
 open System
 
+// shifts
+
+let assassins =
+    {
+        Name = "Assassins"
+        Start = new DateTime(2021, 3, 4, 18, 30, 00)
+        End = new DateTime(2021, 3, 4, 21, 30, 00)
+        Staff = Array.empty
+    }
+
+let dixie = 
+    {
+        Name = "Dixie Swim Club"
+        Start = new DateTime(2021, 2, 15, 18, 30, 00)
+        End = new DateTime(2021, 2, 15, 21, 30, 00)
+        Staff = Array.empty
+    }
+
+let priscilla =
+    {
+        Name = "Priscilla queen of the desert"
+        Start = new DateTime(2021, 1, 26, 13, 30, 00)
+        End = new DateTime(2021, 1, 26, 17, 30, 00)
+        Staff = Array.empty
+    }
+
+// staff
+
+let nancey = 
+    {
+        Forename = "Nancey"
+        Surname = "Fahy"
+        UnavailableDates = Array.empty
+        Shifts = Array.empty
+    }
+
+let cheryl =
+    {
+        Forename = "Cheryl"
+        Surname = "Pentha"
+        UnavailableDates = Array.empty
+        Shifts = Array.empty
+    }
+
+let britte =
+    {
+        Forename = "Britte"
+        Surname = "Lowery"
+        UnavailableDates = Array.empty
+        Shifts = Array.empty
+    }
+
 [<Fact>]
 let ``outputs same as input``() =
     let shifts: Shift[] = [|
-        {
-            Name = "Assassins"
-            Start = new DateTime(2021, 3, 4, 18, 30, 00)
-            End = new DateTime(2021, 3, 4, 21, 30, 00)
-            Staff = Array.empty
-        }
-        {
-            Name = "Dixie Swim Club"
-            Start = new DateTime(2021, 2, 15, 18, 30, 00)
-            End = new DateTime(2021, 2, 15, 21, 30, 00)
-            Staff = Array.empty
-        }
-        {
-            Name = "The Life Of A Tiktoker"
-            Start = new DateTime(2021, 9, 13, 13, 30, 00)
-            End = new DateTime(2021, 9, 13, 17, 30, 00)
-            Staff = Array.empty
-        }
-        {
-            Name = "Priscilla queen of the desert"
-            Start = new DateTime(2021, 1, 26, 13, 30, 00)
-            End = new DateTime(2021, 1, 26, 17, 30, 00)
-            Staff = Array.empty
-        }
-        {
-            Name = "Oh, Coward!"
-            Start = new DateTime(2021, 10, 17, 13, 30, 00)
-            End = new DateTime(2021, 10, 17, 17, 30, 00)
-            Staff = Array.empty
-        }
+        assassins
+        dixie
+        priscilla
     |]
 
     let staff: Person[] = [||]
@@ -48,63 +73,35 @@ let ``outputs same as input``() =
 let ``inverts shift correctly``() =
     let shifts: Shift[] = [|
         {
-            Name = "Assassins"
-            Start = new DateTime(2021, 3, 4, 18, 30, 00)
-            End = new DateTime(2021, 3, 4, 21, 30, 00)
-            Staff = [|
-                {
-                    Forename = "Nancey"
-                    Surname = "Fahy"
-                    UnavailableDates = Array.empty
-                    Shifts = Array.empty
-                }
-                {
-                    Forename = "Cheryl"
-                    Surname = "Pentha"
-                    UnavailableDates = Array.empty
-                    Shifts = Array.empty
-                }
-            |]
+            assassins with Staff =
+                            [|
+                                nancey
+                                cheryl   
+                            |]
         }
+
         {
-            Name = "Dixie Swim Club"
-            Start = new DateTime(2021, 2, 15, 18, 30, 00)
-            End = new DateTime(2021, 2, 15, 21, 30, 00)
-            Staff = [|
-                {
-                    Forename = "Cheryl"
-                    Surname = "Pentha"
-                    UnavailableDates = Array.empty
-                    Shifts = Array.empty
-                }
-                {
-                    Forename = "Britte"
-                    Surname = "Lowery"
-                    UnavailableDates = Array.empty
-                    Shifts = Array.empty
-                }
-            |]
+            dixie with Staff =
+                        [|
+                            britte
+                            cheryl
+                        |]
         }
     |]
 
     let expected = set [|
         {
-            Forename = "Nancey"
-            Surname = "Fahy"
-            UnavailableDates = Array.empty
-            Shifts = Array.empty
+            nancey with Shifts = [| assassins |]
         }
         {
-            Forename = "Cheryl"
-            Surname = "Pentha"
-            UnavailableDates = Array.empty
-            Shifts = Array.empty
+            cheryl with Shifts =
+                        [|
+                            assassins
+                            dixie
+                        |]
         }
         {
-            Forename = "Britte"
-            Surname = "Lowery"
-            UnavailableDates = Array.empty
-            Shifts = Array.empty
+            britte with Shifts = [| dixie |]
         }
     |]
 
