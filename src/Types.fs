@@ -1,4 +1,4 @@
-﻿namespace Scheduling
+﻿namespace rec Scheduling
 
 open System
 
@@ -8,8 +8,9 @@ module Types =
         Forename: string
         Surname: string
         UnavailableDates: DateTime[]
+        Shifts: Shift[]
     }
-
+    
     type Shift = {
         Name: string
         Start: DateTime
