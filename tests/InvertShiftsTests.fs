@@ -1,4 +1,4 @@
-module SchedulerTests
+module InvertShiftsTests
 
 open Xunit
 open Swensen.Unquote

@@ -6,7 +6,7 @@
     <ProjectReference Include="..\src\Scheduling.fsproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SchedulerTests.fs" />
+    <Compile Include="InvertShiftsTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
