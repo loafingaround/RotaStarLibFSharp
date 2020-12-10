@@ -69,8 +69,56 @@ let ``outputs same as input``() =
     let staff: Person[] = [||]
     test <@ (CalculateIntialSchedule shifts staff) = shifts @>
 
+
+
 [<Fact>]
-let ``inverts shift correctly``() =
+let ``inverts single shift single staff member correctly``() =
+    let shifts = [|
+        { assassins with Staff = [| nancey |] }
+    |]
+
+    let expected = set [|
+        { nancey with Shifts = [| assassins |] }
+    |]
+
+    test <@ (invertShifts shifts) = expected @>
+
+[<Fact>]
+let ``inverts single shift two staff correctly``() =
+    let shifts = [|
+        { assassins with Staff =
+                            [|
+                                nancey
+                                cheryl
+                            |] }
+    |]
+
+    let expected = set [|
+        { nancey with Shifts = [| assassins |] }
+        { cheryl with Shifts = [| assassins |] }
+    |]
+
+    test <@ (invertShifts shifts) = expected @>
+
+[<Fact>]
+let ``inverts two shifts single staff member correctly``() =
+    let shifts = [|
+        { assassins with Staff = [| nancey |] }
+        { dixie with Staff = [| nancey |] }
+    |]
+
+    let expected = set [|
+        { nancey with Shifts =
+                        [|
+                            assassins
+                            dixie
+                        |] }
+    |]
+
+    test <@ (invertShifts shifts) = expected @>
+
+[<Fact>]
+let ``inverts two shifts with staff overlap correctly``() =
     let shifts: Shift[] = [|
         {
             assassins with Staff =
@@ -79,7 +127,6 @@ let ``inverts shift correctly``() =
                                 cheryl   
                             |]
         }
-
         {
             dixie with Staff =
                         [|
