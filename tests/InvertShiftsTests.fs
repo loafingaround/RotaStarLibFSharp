@@ -39,7 +39,7 @@ let nancey =
         Forename = "Nancey"
         Surname = "Fahy"
         UnavailableDates = Array.empty
-        Shifts = Array.empty
+        Shifts = Set.empty
     }
 
 let cheryl =
@@ -47,7 +47,7 @@ let cheryl =
         Forename = "Cheryl"
         Surname = "Pentha"
         UnavailableDates = Array.empty
-        Shifts = Array.empty
+        Shifts = Set.empty
     }
 
 let britte =
@@ -55,7 +55,7 @@ let britte =
         Forename = "Britte"
         Surname = "Lowery"
         UnavailableDates = Array.empty
-        Shifts = Array.empty
+        Shifts = Set.empty
     }
 
 [<Fact>]
@@ -78,7 +78,7 @@ let ``inverts single shift single staff member correctly``() =
     |]
 
     let expected = set [|
-        { nancey with Shifts = [| assassins |] }
+        { nancey with Shifts = set [| assassins |] }
     |]
 
     test <@ (invertShifts shifts) = expected @>
@@ -94,8 +94,8 @@ let ``inverts single shift two staff correctly``() =
     |]
 
     let expected = set [|
-        { nancey with Shifts = [| assassins |] }
-        { cheryl with Shifts = [| assassins |] }
+        { nancey with Shifts = set [| assassins |] }
+        { cheryl with Shifts = set [| assassins |] }
     |]
 
     test <@ (invertShifts shifts) = expected @>
@@ -109,7 +109,7 @@ let ``inverts two shifts single staff member correctly``() =
 
     let expected = set [|
         { nancey with Shifts =
-                        [|
+                        set [|
                             assassins
                             dixie
                         |] }
@@ -138,17 +138,17 @@ let ``inverts two shifts with staff overlap correctly``() =
 
     let expected = set [|
         {
-            nancey with Shifts = [| assassins |]
+            nancey with Shifts = set [| assassins |]
         }
         {
             cheryl with Shifts =
-                        [|
+                        set [|
                             assassins
                             dixie
                         |]
         }
         {
-            britte with Shifts = [| dixie |]
+            britte with Shifts = set [| dixie |]
         }
     |]
 
