@@ -20,4 +20,4 @@ module Scheduler =
         shifts
         |> Array.collect (fun s -> s.Staff |> Array.map (fun sm -> sm, { s with Staff = Array.empty }))
         |> Array.groupBy fst
-        |> Array.map (fun g -> { fst g with Shifts = snd g |> Array.map (fun ss -> snd ss) |> Set.ofArray })
+        |> Array.map (fun g -> { fst g with Shifts = snd g |> Array.map (fun ss -> snd ss) })

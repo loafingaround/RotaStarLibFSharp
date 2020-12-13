@@ -8,7 +8,7 @@ module Types =
         Forename: string
         Surname: string
         UnavailableDates: DateTime[]
-        Shifts: Set<Shift>
+        Shifts: Shift[]
     }
     
     type Shift = {

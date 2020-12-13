@@ -6,6 +6,9 @@ open Scheduling.Scheduler
 open Scheduling.Types
 open Common
 
+let sortAll staffShifts =
+    Array.sort (Array.map (fun s -> { s with Shifts = Array.sort s.Shifts }) staffShifts)
+
 [<Fact>]
 let ``inverts single shift single staff member correctly``() =
     let shifts = [|
@@ -13,10 +16,10 @@ let ``inverts single shift single staff member correctly``() =
     |]
 
     let expected = [|
-        { nancey with Shifts = set [| assassins |] }
+        { nancey with Shifts = [| assassins |] }
     |]
 
-    test <@ (invertShifts shifts) = expected @>
+    test <@ sortAll (invertShifts shifts) = sortAll expected @>
 
 [<Fact>]
 let ``inverts single shift two staff correctly``() =
@@ -29,11 +32,11 @@ let ``inverts single shift two staff correctly``() =
     |]
 
     let expected = [|
-        { nancey with Shifts = set [| assassins |] }
-        { cheryl with Shifts = set [| assassins |] }
+        { nancey with Shifts = [| assassins |] }
+        { cheryl with Shifts = [| assassins |] }
     |]
 
-    test <@ Array.sort (invertShifts shifts) = Array.sort expected @>
+    test <@ sortAll (invertShifts shifts) = sortAll expected @>
 
 [<Fact>]
 let ``inverts two shifts single staff member correctly``() =
@@ -44,13 +47,13 @@ let ``inverts two shifts single staff member correctly``() =
 
     let expected = [|
         { nancey with Shifts =
-                        set [|
-                            assassins
+                        [|
                             dixie
+                            assassins
                         |] }
     |]
 
-    test <@ (invertShifts shifts) = expected @>
+    test <@ sortAll (invertShifts shifts) = sortAll expected @>
 
 [<Fact>]
 let ``inverts two shifts with staff overlap correctly``() =
@@ -73,18 +76,18 @@ let ``inverts two shifts with staff overlap correctly``() =
 
     let expected = [|
         {
-            nancey with Shifts = set [| assassins |]
+            nancey with Shifts = [| assassins |]
         }
         {
             cheryl with Shifts =
-                        set [|
-                            assassins
+                        [|
                             dixie
+                            assassins
                         |]
         }
         {
-            britte with Shifts = set [| dixie |]
+            britte with Shifts = [| dixie |]
         }
     |]
 
-    test <@ Array.sort (invertShifts shifts) = Array.sort expected @>
+    test <@ sortAll (invertShifts shifts) = sortAll expected @>

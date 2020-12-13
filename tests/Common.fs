@@ -36,7 +36,7 @@ let nancey =
         Forename = "Nancey"
         Surname = "Fahy"
         UnavailableDates = Array.empty
-        Shifts = Set.empty
+        Shifts = Array.empty
     }
 
 let cheryl =
@@ -44,7 +44,7 @@ let cheryl =
         Forename = "Cheryl"
         Surname = "Pentha"
         UnavailableDates = Array.empty
-        Shifts = Set.empty
+        Shifts = Array.empty
     }
 
 let britte =
@@ -52,5 +52,5 @@ let britte =
         Forename = "Britte"
         Surname = "Lowery"
         UnavailableDates = Array.empty
-        Shifts = Set.empty
+        Shifts = Array.empty
     }
