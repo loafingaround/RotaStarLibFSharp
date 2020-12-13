@@ -7,19 +7,6 @@ open Scheduling.Types
 open Common
 
 [<Fact>]
-let ``outputs same as input``() =
-    let shifts: Shift[] = [|
-        assassins
-        dixie
-        priscilla
-    |]
-
-    let staff: Person[] = [||]
-    test <@ (CalculateIntialSchedule shifts staff) = shifts @>
-
-
-
-[<Fact>]
 let ``inverts single shift single staff member correctly``() =
     let shifts = [|
         { assassins with Staff = [| nancey |] }
