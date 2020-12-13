@@ -1,4 +1,4 @@
-module InvertShiftsTests
+module CalculateAverageShiftsPerStaffMemberTests
 
 open Xunit
 open Swensen.Unquote
@@ -7,32 +7,15 @@ open Scheduling.Types
 open Common
 
 [<Fact>]
-let ``outputs same as input``() =
-    let shifts: Shift[] = [|
-        assassins
-        dixie
-        priscilla
-    |]
-
-    let staff: Person[] = [||]
-    test <@ (CalculateIntialSchedule shifts staff) = shifts @>
-
-
-
-[<Fact>]
-let ``inverts single shift single staff member correctly``() =
+let ``calculates for single shift single staff member correctly``() =
     let shifts = [|
         { assassins with Staff = [| nancey |] }
     |]
 
-    let expected = set [|
-        { nancey with Shifts = set [| assassins |] }
-    |]
-
-    test <@ (invertShifts shifts) = expected @>
+    test <@ (calculateAverageShiftsPerStaffMember shifts) = 1 @>
 
 [<Fact>]
-let ``inverts single shift two staff correctly``() =
+let ``calculates for single shift two staff correctly``() =
     let shifts = [|
         { assassins with Staff =
                             [|
@@ -41,38 +24,25 @@ let ``inverts single shift two staff correctly``() =
                             |] }
     |]
 
-    let expected = set [|
-        { nancey with Shifts = set [| assassins |] }
-        { cheryl with Shifts = set [| assassins |] }
-    |]
-
-    test <@ (invertShifts shifts) = expected @>
+    test <@ (calculateAverageShiftsPerStaffMember shifts) = 1 @>
 
 [<Fact>]
-let ``inverts two shifts single staff member correctly``() =
+let ``calculates for two shifts single staff member correctly``() =
     let shifts = [|
         { assassins with Staff = [| nancey |] }
         { dixie with Staff = [| nancey |] }
     |]
 
-    let expected = set [|
-        { nancey with Shifts =
-                        set [|
-                            assassins
-                            dixie
-                        |] }
-    |]
-
-    test <@ (invertShifts shifts) = expected @>
+    test <@ (calculateAverageShiftsPerStaffMember shifts) = 2 @>
 
 [<Fact>]
-let ``inverts two shifts with staff overlap correctly``() =
+let ``calculates for two shifts with staff overlap correctly``() =
     let shifts: Shift[] = [|
         {
             assassins with Staff =
                             [|
                                 nancey
-                                cheryl   
+                                cheryl
                             |]
         }
         {
@@ -100,4 +70,4 @@ let ``inverts two shifts with staff overlap correctly``() =
         }
     |]
 
-    test <@ (invertShifts shifts) = expected @>
+    test <@ (calculateAverageShiftsPerStaffMember shifts) = 4/3 @>

@@ -9,6 +9,9 @@ module Scheduler =
 
     // TODO let CalculateCost(shifts: Shift[]) =
 
+    let calculateAverageShiftsPerStaffMember (shifts: Shift[]): int =
+        failwith "Not implemented"
+
     let invertShifts(shifts: Shift[]) =
         let staff = Set.empty<Person>
         shifts

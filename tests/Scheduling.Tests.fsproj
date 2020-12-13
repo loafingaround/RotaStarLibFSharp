@@ -6,6 +6,8 @@
     <ProjectReference Include="..\src\Scheduling.fsproj" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common.fs" />
+    <Compile Include="CalculateAverageShiftsPerStaffMemberTests.fs" />
     <Compile Include="InvertShiftsTests.fs" />
   </ItemGroup>
   <ItemGroup>
