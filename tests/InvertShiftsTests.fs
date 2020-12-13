@@ -12,7 +12,7 @@ let ``inverts single shift single staff member correctly``() =
         { assassins with Staff = [| nancey |] }
     |]
 
-    let expected = set [|
+    let expected = [|
         { nancey with Shifts = set [| assassins |] }
     |]
 
@@ -28,12 +28,12 @@ let ``inverts single shift two staff correctly``() =
                             |] }
     |]
 
-    let expected = set [|
+    let expected = [|
         { nancey with Shifts = set [| assassins |] }
         { cheryl with Shifts = set [| assassins |] }
     |]
 
-    test <@ (invertShifts shifts) = expected @>
+    test <@ Array.sort (invertShifts shifts) = Array.sort expected @>
 
 [<Fact>]
 let ``inverts two shifts single staff member correctly``() =
@@ -42,7 +42,7 @@ let ``inverts two shifts single staff member correctly``() =
         { dixie with Staff = [| nancey |] }
     |]
 
-    let expected = set [|
+    let expected = [|
         { nancey with Shifts =
                         set [|
                             assassins
@@ -71,7 +71,7 @@ let ``inverts two shifts with staff overlap correctly``() =
         }
     |]
 
-    let expected = set [|
+    let expected = [|
         {
             nancey with Shifts = set [| assassins |]
         }
@@ -87,4 +87,4 @@ let ``inverts two shifts with staff overlap correctly``() =
         }
     |]
 
-    test <@ (invertShifts shifts) = expected @>
+    test <@ Array.sort (invertShifts shifts) = Array.sort expected @>
