@@ -12,7 +12,7 @@ let ``calculates for single shift single staff member correctly``() =
         { assassins with Staff = [| nancey |] }
     |]
 
-    test <@ (calculateAverageShiftsPerStaffMember shifts) = 1 @>
+    test <@ (calculateAverageShiftsPerStaffMember shifts) = 1M @>
 
 [<Fact>]
 let ``calculates for single shift two staff correctly``() =
@@ -24,7 +24,7 @@ let ``calculates for single shift two staff correctly``() =
                             |] }
     |]
 
-    test <@ (calculateAverageShiftsPerStaffMember shifts) = 1 @>
+    test <@ (calculateAverageShiftsPerStaffMember shifts) = 1M @>
 
 [<Fact>]
 let ``calculates for two shifts single staff member correctly``() =
@@ -33,7 +33,7 @@ let ``calculates for two shifts single staff member correctly``() =
         { dixie with Staff = [| nancey |] }
     |]
 
-    test <@ (calculateAverageShiftsPerStaffMember shifts) = 2 @>
+    test <@ (calculateAverageShiftsPerStaffMember shifts) = 2M @>
 
 [<Fact>]
 let ``calculates for two shifts with staff overlap correctly``() =
@@ -54,20 +54,33 @@ let ``calculates for two shifts with staff overlap correctly``() =
         }
     |]
 
-    let expected = set [|
+    test <@ (calculateAverageShiftsPerStaffMember shifts) = 4M/3M @>
+
+
+[<Fact>]
+let ``calculates for _ correctly``() =
+    let shifts: Shift[] = [|
         {
-            nancey with Shifts = set [| assassins |]
+            assassins with Staff =
+                            [|
+                                nancey
+                                cheryl
+                            |]
         }
         {
-            cheryl with Shifts =
-                        set [|
-                            assassins
-                            dixie
-                        |]
+            dixie with Staff =
+                            [|
+                                britte
+                                cheryl
+                            |]
         }
         {
-            britte with Shifts = set [| dixie |]
+            priscilla with Staff =
+                            [|
+                                cheryl
+                                britte
+                            |]
         }
     |]
 
-    test <@ (calculateAverageShiftsPerStaffMember shifts) = 4/3 @>
+    test <@ (calculateAverageShiftsPerStaffMember shifts) = 2M @>
