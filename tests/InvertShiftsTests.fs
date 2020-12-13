@@ -57,7 +57,7 @@ let ``inverts two shifts single staff member correctly``() =
 
 [<Fact>]
 let ``inverts two shifts with staff overlap correctly``() =
-    let shifts: Shift[] = [|
+    let shifts = [|
         {
             assassins with Staff =
                             [|

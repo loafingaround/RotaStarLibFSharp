@@ -37,7 +37,7 @@ let ``calculates for two shifts single staff member correctly``() =
 
 [<Fact>]
 let ``calculates for two shifts with staff overlap correctly``() =
-    let shifts: Shift[] = [|
+    let shifts = [|
         {
             assassins with Staff =
                             [|
@@ -59,7 +59,7 @@ let ``calculates for two shifts with staff overlap correctly``() =
 
 [<Fact>]
 let ``calculates for _ correctly``() =
-    let shifts: Shift[] = [|
+    let shifts = [|
         {
             assassins with Staff =
                             [|

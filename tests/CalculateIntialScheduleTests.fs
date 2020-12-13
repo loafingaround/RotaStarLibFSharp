@@ -8,11 +8,12 @@ open Common
 
 [<Fact>]
 let ``outputs same as input``() =
-    let shifts: Shift[] = [|
+    let shifts = [|
         assassins
         dixie
         priscilla
     |]
 
     let staff: Person[] = [||]
+    
     test <@ (CalculateIntialSchedule shifts staff) = shifts @>
