@@ -4,11 +4,6 @@ module Scheduler =
 
     open Types
 
-    let CalculateIntialSchedule shifts staff =
-       shifts
-
-    // TODO let CalculateCost shifts =
-
     let calculateAverageShiftsPerStaffMember shifts =
         let shiftStaff =
             shifts
@@ -21,3 +16,10 @@ module Scheduler =
         |> Array.collect (fun s -> s.Staff |> Array.map (fun sm -> sm, { s with Staff = Array.empty }))
         |> Array.groupBy fst
         |> Array.map (fun g -> { fst g with Shifts = snd g |> Array.map (fun ss -> snd ss) })
+
+    let calculateCost shifts =
+        // TODO: make this more sophisticated
+        calculateAverageShiftsPerStaffMember shifts
+
+    let calculateIntialSchedule shifts staff =
+        shifts

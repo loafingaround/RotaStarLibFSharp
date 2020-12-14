@@ -4,10 +4,15 @@ open System
 
 module Types =
     
+    type DateRange = {
+        Start: DateTime
+        End: DateTime
+    }
+
     type Person = {
         Forename: string
         Surname: string
-        UnavailableDates: DateTime[]
+        UnavailableDates: DateRange[]
         Shifts: Shift[]
     }
     
@@ -16,4 +21,5 @@ module Types =
         Start: DateTime
         End: DateTime
         Staff: Person[]
+        MinStaffCount: int
     }
