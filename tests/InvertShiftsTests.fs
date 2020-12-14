@@ -10,6 +10,24 @@ let sortAll staffShifts =
     Array.sort (Array.map (fun s -> { s with Shifts = Array.sort s.Shifts }) staffShifts)
 
 [<Fact>]
+let ``inverts no shifts correctly``() =
+    let shifts = Array.empty<Shift>
+
+    let expected = Array.empty<Person>
+
+    test <@ sortAll (invertShifts shifts) = sortAll expected @>
+
+[<Fact>]
+let ``inverts single shift no staff correctly``() =
+    let shifts = [|
+        { assassins with Staff = Array.empty }
+    |]
+
+    let expected = Array.empty<Person>
+
+    test <@ sortAll (invertShifts shifts) = sortAll expected @>
+
+[<Fact>]
 let ``inverts single shift single staff member correctly``() =
     let shifts = [|
         { assassins with Staff = [| nancey |] }
@@ -83,6 +101,55 @@ let ``inverts two shifts with staff overlap correctly``() =
                         [|
                             dixie
                             assassins
+                        |]
+        }
+        {
+            britte with Shifts = [| dixie |]
+        }
+    |]
+
+    test <@ sortAll (invertShifts shifts) = sortAll expected @>
+
+[<Fact>]
+let ``inverts three shifts with staff overlap correctly``() =
+    let shifts = [|
+        {
+            assassins with Staff =
+                            [|
+                                nancey
+                                cheryl   
+                            |]
+        }
+        {
+            dixie with Staff =
+                        [|
+                            britte
+                            cheryl
+                        |]
+        }
+        {
+            priscilla with Staff =
+                            [|
+                                nancey
+                                cheryl
+                            |]
+        }
+    |]
+
+    let expected = [|
+        {
+            nancey with Shifts =
+                        [|
+                            assassins
+                            priscilla
+                        |]
+        }
+        {
+            cheryl with Shifts =
+                        [|
+                            dixie
+                            assassins
+                            priscilla
                         |]
         }
         {

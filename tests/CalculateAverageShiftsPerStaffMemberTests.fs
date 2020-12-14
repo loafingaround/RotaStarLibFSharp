@@ -56,9 +56,8 @@ let ``calculates for two shifts with staff overlap correctly``() =
 
     test <@ (calculateAverageShiftsPerStaffMember shifts) = 4M/3M @>
 
-
 [<Fact>]
-let ``calculates for _ correctly``() =
+let ``calculates for three shifts with staff overlap correctly``() =
     let shifts = [|
         {
             assassins with Staff =
