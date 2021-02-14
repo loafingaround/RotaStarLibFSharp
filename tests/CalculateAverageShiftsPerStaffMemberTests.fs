@@ -1,4 +1,4 @@
-module CalculateAverageShiftsPerStaffMemberTests
+module CalculateMeanShiftsPerStaffMemberFromShiftsTests
 
 open Xunit
 open Swensen.Unquote
@@ -12,7 +12,7 @@ let ``calculates for single shift single staff member correctly``() =
         { assassins with Staff = [| nancey |] }
     |]
 
-    test <@ (calculateAverageShiftsPerStaffMember shifts) = 1M @>
+    test <@ (calculateMeanShiftsPerStaffMemberFromShifts shifts) = 1M @>
 
 [<Fact>]
 let ``calculates for single shift two staff correctly``() =
@@ -24,7 +24,7 @@ let ``calculates for single shift two staff correctly``() =
                             |] }
     |]
 
-    test <@ (calculateAverageShiftsPerStaffMember shifts) = 1M @>
+    test <@ (calculateMeanShiftsPerStaffMemberFromShifts shifts) = 1M @>
 
 [<Fact>]
 let ``calculates for two shifts single staff member correctly``() =
@@ -33,7 +33,7 @@ let ``calculates for two shifts single staff member correctly``() =
         { dixie with Staff = [| nancey |] }
     |]
 
-    test <@ (calculateAverageShiftsPerStaffMember shifts) = 2M @>
+    test <@ (calculateMeanShiftsPerStaffMemberFromShifts shifts) = 2M @>
 
 [<Fact>]
 let ``calculates for two shifts with staff overlap correctly``() =
@@ -54,7 +54,7 @@ let ``calculates for two shifts with staff overlap correctly``() =
         }
     |]
 
-    test <@ (calculateAverageShiftsPerStaffMember shifts) = 4M/3M @>
+    test <@ (calculateMeanShiftsPerStaffMemberFromShifts shifts) = 4M/3M @>
 
 [<Fact>]
 let ``calculates for three shifts with staff overlap correctly``() =
@@ -82,4 +82,4 @@ let ``calculates for three shifts with staff overlap correctly``() =
         }
     |]
 
-    test <@ (calculateAverageShiftsPerStaffMember shifts) = 2M @>
+    test <@ (calculateMeanShiftsPerStaffMemberFromShifts shifts) = 2M @>

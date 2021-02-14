@@ -4,13 +4,17 @@ module Scheduler =
 
     open Types
 
-    let calculateAverageShiftsPerStaffMember shifts =
+    let calculateMeanShiftsPerStaffMemberFromShifts shifts =
         let shiftStaff =
             shifts
             |> Array.collect (fun s -> s.Staff)
         let uniqueStaff = Array.distinct shiftStaff
         decimal shiftStaff.Length / decimal uniqueStaff.Length
 
+    let calculateMeanShiftsPerStaffMemberFromStaff staff =
+        let total = staff |> Array.sumBy (fun s -> s.Shifts.Length)
+        (decimal) total / (decimal) staff.Length
+   
     let invertShifts shifts =
         shifts
         |> Array.collect (fun s -> s.Staff |> Array.map (fun sm -> sm, { s with Staff = Array.empty }))
@@ -19,7 +23,7 @@ module Scheduler =
 
     let calculateCost shifts =
         // TODO: make this more sophisticated
-        calculateAverageShiftsPerStaffMember shifts
+        calculateMeanShiftsPerStaffMemberFromShifts shifts
 
     let calculateIntialSchedule shifts staff =
         shifts
