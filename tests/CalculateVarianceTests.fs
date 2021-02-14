@@ -12,7 +12,7 @@ let ``calculates for single shift single staff member correctly``() =
         { assassins with Staff = [| nancey |] }
     |]
 
-    test <@ (calculateVariance shifts) = 0M @>
+    test <@ (calculateVariance shifts) = 0.0 @>
 
 [<Fact>]
 let ``calculates for single shift two staff correctly``() =
@@ -24,7 +24,7 @@ let ``calculates for single shift two staff correctly``() =
                             |] }
     |]
 
-    test <@ (calculateVariance shifts) = 0M @>
+    test <@ (calculateVariance shifts) = 0.0 @>
 
 [<Fact>]
 let ``calculates for two shifts single staff member correctly``() =
@@ -33,7 +33,7 @@ let ``calculates for two shifts single staff member correctly``() =
         { dixie with Staff = [| nancey |] }
     |]
 
-    test <@ (calculateVariance shifts) = 0M @>
+    test <@ (calculateVariance shifts) = 0.0 @>
 
 [<Fact>]
 let ``calculates for two shifts with staff overlap correctly``() =
@@ -54,7 +54,7 @@ let ``calculates for two shifts with staff overlap correctly``() =
         }
     |]
 
-    test <@ (calculateVariance shifts) = 2M/9M @>
+    test <@ (calculateVariance shifts) = 2.0/9.0 @>
 
 [<Fact>]
 let ``calculates for three shifts with staff overlap correctly``() =
@@ -82,4 +82,4 @@ let ``calculates for three shifts with staff overlap correctly``() =
         }
     |]
 
-    test <@ (calculateVariance shifts) = 2M/3M @>
+    test <@ (calculateVariance shifts) = 2.0/3.0 @>

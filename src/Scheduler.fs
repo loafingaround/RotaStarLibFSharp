@@ -16,14 +16,18 @@ module Scheduler =
         (decimal) total / (decimal) staff.Length
 
     let calculateVariance shifts =
-        let mean = calculateMeanShiftsPerStaffMemberFromShifts shifts
-        let shiftsCounts =
+        let mean = (float) (calculateMeanShiftsPerStaffMemberFromShifts shifts)
+        let shiftCounts =
             shifts
             |> Array.collect (fun s -> s.Staff)
             |> Array.groupBy id
-            |> Array.map (fun g -> (snd g).Length)
-        // TODO: implement the rest
-        0M
+            |> Array.map (fun g -> (float) (snd g).Length)
+
+        let total =
+            shiftCounts
+            |> Array.sumBy (fun c -> (c - mean) ** 2.0)
+
+        total / (float) shiftCounts.Length
     
     let invertShifts shifts =
         shifts
