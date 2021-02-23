@@ -83,3 +83,35 @@ let ``calculates for three shifts with staff overlap correctly``() =
     |]
 
     test <@ (calculateVariance shifts) = 2.0/3.0 @>
+
+[<Fact>]
+let ``calculates for four shifts with very unfair staffing correctly``() =
+    let shifts = [|
+        {
+            assassins with Staff =
+                            [|
+                                nancey
+                                cheryl
+                            |]
+        }
+        {
+            dixie with Staff =
+                            [|
+                                cheryl
+                            |]
+        }
+        {
+            priscilla with Staff =
+                            [|
+                                cheryl
+                            |]
+        }
+        {
+            succeedInBusiness with Staff =
+                                    [|
+                                        cheryl
+                                    |]
+        }
+    |]
+
+    test <@ (calculateVariance shifts) = 2.25 @>

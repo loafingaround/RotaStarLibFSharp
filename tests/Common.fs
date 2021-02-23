@@ -32,6 +32,15 @@ let priscilla =
         MinStaffCount = 0
     }
 
+let succeedInBusiness =
+    {
+        Name = "How To Succeed in Business Without Really Trying"
+        Start = new DateTime(2021, 4, 30, 14, 30, 00)
+        End = new DateTime(2021, 4, 30, 16, 00, 00)
+        Staff = Array.empty
+        MinStaffCount = 0
+    }
+
 // staff
 
 let nancey =
