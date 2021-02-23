@@ -18,6 +18,7 @@ module Types =
     
     type Shift = {
         Name: string
+        // TODO: use DateRange
         Start: DateTime
         End: DateTime
         Staff: Person[]

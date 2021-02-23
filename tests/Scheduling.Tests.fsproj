@@ -12,6 +12,7 @@
     <Compile Include="InvertShiftsTests.fs" />
     <Compile Include="CalculateIntialScheduleTests.fs" />
     <Compile Include="CalculateVarianceTests.fs" />
+    <Compile Include="ShiftsToCsvTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
