@@ -72,9 +72,9 @@ let ``converts two shifts two staff with one shift each correctly``() =
         { dixie with Staff = [| nancey |] }
     |]
 
-    test <@ (shiftsToCsv shifts) = """,Nancey Fahy,Britte Lowery
-Priscilla queen of the desert,,X
-Dixie Swim Club,X,""" @>
+    test <@ (shiftsToCsv shifts) = """,Britte Lowery,Nancey Fahy
+Priscilla queen of the desert,X,
+Dixie Swim Club,,X""" @>
 
 [<Fact>]
 let ``converts three shifts with staff overlap correctly``() =
