@@ -45,6 +45,7 @@ let succeedInBusiness =
 
 let nancey =
     {
+        Id = 1
         Forename = "Nancey"
         Surname = "Fahy"
         UnavailableDates = Array.empty
@@ -53,6 +54,7 @@ let nancey =
 
 let cheryl =
     {
+        Id = 2
         Forename = "Cheryl"
         Surname = "Pentha"
         UnavailableDates = Array.empty
@@ -61,6 +63,7 @@ let cheryl =
 
 let britte =
     {
+        Id = 3
         Forename = "Britte"
         Surname = "Lowery"
         UnavailableDates = Array.empty

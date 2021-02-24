@@ -10,6 +10,7 @@ module Types =
     }
 
     type Person = {
+        Id: int
         Forename: string
         Surname: string
         UnavailableDates: DateRange[]
