@@ -1,6 +1,7 @@
 module Utilities
 
 open System
+open System.IO
 open Scheduling.Types
 open System.Collections.Generic
 
@@ -27,3 +28,7 @@ let shiftsToCsv shifts =
     for kvp in shiftLines do
         csv <- csv + "\n" + kvp.Key + kvp.Value
     csv
+
+let shiftsToCsvFile shifts filePath =
+    let csv = shiftsToCsv shifts
+    File.WriteAllText(filePath, csv)
