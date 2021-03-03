@@ -18,6 +18,7 @@ module Types =
     }
     
     type Shift = {
+        Id: int
         Name: string
         // TODO: use DateRange
         Start: DateTime

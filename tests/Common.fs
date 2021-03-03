@@ -7,6 +7,7 @@ open Scheduling.Types
 
 let assassins =
     {
+        Id = 1
         Name = "Assassins"
         Start = new DateTime(2021, 3, 4, 18, 30, 00)
         End = new DateTime(2021, 3, 4, 21, 30, 00)
@@ -16,6 +17,7 @@ let assassins =
 
 let dixie =
     {
+        Id = 2
         Name = "Dixie Swim Club"
         Start = new DateTime(2021, 2, 15, 18, 30, 00)
         End = new DateTime(2021, 2, 15, 21, 30, 00)
@@ -25,6 +27,7 @@ let dixie =
 
 let priscilla =
     {
+        Id = 3
         Name = "Priscilla queen of the desert"
         Start = new DateTime(2021, 1, 26, 13, 30, 00)
         End = new DateTime(2021, 1, 26, 17, 30, 00)
@@ -34,6 +37,7 @@ let priscilla =
 
 let succeedInBusiness =
     {
+        Id = 4
         Name = "How To Succeed in Business Without Really Trying"
         Start = new DateTime(2021, 4, 30, 14, 30, 00)
         End = new DateTime(2021, 4, 30, 16, 00, 00)
