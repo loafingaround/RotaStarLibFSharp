@@ -36,8 +36,22 @@ module Scheduler =
         |> Array.map (fun g -> { fst g with Shifts = snd g |> Array.map (fun ss -> snd ss) })
 
     let calculateCost shifts =
-        // TODO: make this more sophisticated
-        calculateMeanShiftsPerStaffMemberFromShifts shifts
+        calculateVariance shifts
+
+    let meetsHardConstraints shifts staff =
+        // TODO: implement this properly with checks for different kinds of failure to meet requirements
+        if false then
+            Error (MinimumNumberOfStaff(required = 2, actual = 1))
+        else
+            Ok (shifts, staff)
 
     let calculateIntialSchedule shifts staff =
+        // TODO: implement
         shifts
+
+    let calculateSchedule shifts staff =
+        match meetsHardConstraints shifts staff with
+        | Error requirement ->
+            Error requirement
+        | Ok (shifts, staff) ->
+            Ok (calculateIntialSchedule shifts staff)

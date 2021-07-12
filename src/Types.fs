@@ -26,3 +26,7 @@ module Types =
         Staff: Person[]
         MinStaffCount: int
     }
+
+    type ShiftRequirement =
+        | MinimumNumberOfStaff of required: int * actual: int
+        | MinimumNumberOfFirstAiders of reqired: int * actual: int
