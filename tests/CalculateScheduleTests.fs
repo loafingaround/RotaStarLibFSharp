@@ -1,4 +1,4 @@
-module CalculateIntialScheduleTests
+module CalculateScheduleTests
 
 open Xunit
 open Swensen.Unquote
@@ -17,7 +17,7 @@ let ``outputs same as input``() =
 
     let staff: StaffMember[] = [||]
     
-    test <@ (calculateIntialSchedule shifts staff) = shifts @>
+    test <@ (calculateSchedule shifts staff) = Ok shifts @>
 
 [<Fact>]
 let ``returns error if feasible schedule is impossible`` =

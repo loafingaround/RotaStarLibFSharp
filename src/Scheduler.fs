@@ -45,13 +45,27 @@ module Scheduler =
         else
             Ok (shifts, staff)
 
-    let calculateIntialSchedule shifts staff =
-        // TODO: implement
-        shifts
+    let calculateInitialSchedule (shifts: Shift[]) (staff: StaffMember[]) =
+        let pick shift =
+            staff
+            // TODO: assign and sort by weighting according existing number of shifts, shift preferences etc.
+            |> Array.sortBy (fun s -> s.Shifts.Length)
+            |> Array.truncate shift.MaximumNumberOfStaff
+
+        Ok [|
+            for i in 0..shifts.Length - 1 ->
+                let picked = pick shifts.[i]
+
+                for sm in picked do
+                    let ix = staff |> Array.findIndex (fun curr -> curr = sm)
+                    staff.[ix] <- {staff.[ix] with Shifts = Array.append staff.[ix].Shifts [|shifts.[i]|]}
+
+                { shifts.[i] with Staff = picked }
+        |]
 
     let calculateSchedule shifts staff =
         match meetsHardConstraints shifts staff with
         | Error requirement ->
             Error requirement
         | Ok (shifts, staff) ->
-            Ok (calculateIntialSchedule shifts staff)
+            calculateInitialSchedule shifts staff

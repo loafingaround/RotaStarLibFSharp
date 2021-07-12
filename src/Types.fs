@@ -25,6 +25,7 @@ module Types =
         End: DateTime
         Staff: StaffMember[]
         MinimumNumberOfStaff: int
+        MaximumNumberOfStaff: int
     }
 
     type ShiftRequirement =

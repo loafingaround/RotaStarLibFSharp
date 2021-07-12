@@ -13,6 +13,7 @@ let assassins =
         End = new DateTime(2021, 3, 4, 21, 30, 00)
         Staff = Array.empty
         MinimumNumberOfStaff = 0
+        MaximumNumberOfStaff = 0
     }
 
 let dixie =
@@ -23,6 +24,7 @@ let dixie =
         End = new DateTime(2021, 2, 15, 21, 30, 00)
         Staff = Array.empty
         MinimumNumberOfStaff = 0
+        MaximumNumberOfStaff = 0
     }
 
 let priscilla =
@@ -33,6 +35,7 @@ let priscilla =
         End = new DateTime(2021, 1, 26, 17, 30, 00)
         Staff = Array.empty
         MinimumNumberOfStaff = 0
+        MaximumNumberOfStaff = 0
     }
 
 let succeedInBusiness =
@@ -43,6 +46,7 @@ let succeedInBusiness =
         End = new DateTime(2021, 4, 30, 16, 00, 00)
         Staff = Array.empty
         MinimumNumberOfStaff = 0
+        MaximumNumberOfStaff = 0
     }
 
 // staff
