@@ -9,7 +9,7 @@ module Types =
         End: DateTime
     }
 
-    type Person = {
+    type StaffMember = {
         Id: int
         Forename: string
         Surname: string
@@ -23,8 +23,8 @@ module Types =
         // TODO: use DateRange
         Start: DateTime
         End: DateTime
-        Staff: Person[]
-        MinStaffCount: int
+        Staff: StaffMember[]
+        MinimumNumberOfStaff: int
     }
 
     type ShiftRequirement =

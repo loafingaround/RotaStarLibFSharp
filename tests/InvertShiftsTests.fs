@@ -13,7 +13,7 @@ let sortAll staffShifts =
 let ``inverts no shifts correctly``() =
     let shifts = Array.empty<Shift>
 
-    let expected = Array.empty<Person>
+    let expected = Array.empty<StaffMember>
 
     test <@ sortAll (invertShifts shifts) = sortAll expected @>
 
@@ -23,7 +23,7 @@ let ``inverts single shift no staff correctly``() =
         { assassins with Staff = Array.empty }
     |]
 
-    let expected = Array.empty<Person>
+    let expected = Array.empty<StaffMember>
 
     test <@ sortAll (invertShifts shifts) = sortAll expected @>
 
@@ -117,7 +117,7 @@ let ``inverts three shifts with staff overlap correctly``() =
             assassins with Staff =
                             [|
                                 nancey
-                                cheryl   
+                                cheryl
                             |]
         }
         {

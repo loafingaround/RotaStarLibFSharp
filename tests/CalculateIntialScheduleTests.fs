@@ -15,7 +15,7 @@ let ``outputs same as input``() =
         priscilla
     |]
 
-    let staff: Person[] = [||]
+    let staff: StaffMember[] = [||]
     
     test <@ (calculateIntialSchedule shifts staff) = shifts @>
 
