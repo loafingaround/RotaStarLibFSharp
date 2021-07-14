@@ -12,7 +12,7 @@ let ``calculates for single shift single staff member correctly``() =
         { assassins with Staff = [| nancey |] }
     |]
 
-    test <@ (calculateMeanShiftsPerStaffMemberFromShifts shifts) = 1.0 @>
+    test <@ (calculateMeanShiftsPerStaffMember shifts) = 1.0 @>
 
 [<Fact>]
 let ``calculates for single shift two staff correctly``() =
@@ -24,7 +24,7 @@ let ``calculates for single shift two staff correctly``() =
                             |] }
     |]
 
-    test <@ (calculateMeanShiftsPerStaffMemberFromShifts shifts) = 1.0 @>
+    test <@ (calculateMeanShiftsPerStaffMember shifts) = 1.0 @>
 
 [<Fact>]
 let ``calculates for two shifts single staff member correctly``() =
@@ -33,7 +33,7 @@ let ``calculates for two shifts single staff member correctly``() =
         { dixie with Staff = [| nancey |] }
     |]
 
-    test <@ (calculateMeanShiftsPerStaffMemberFromShifts shifts) = 2.0 @>
+    test <@ (calculateMeanShiftsPerStaffMember shifts) = 2.0 @>
 
 [<Fact>]
 let ``calculates for two shifts with staff overlap correctly``() =
@@ -54,7 +54,7 @@ let ``calculates for two shifts with staff overlap correctly``() =
         }
     |]
 
-    test <@ (calculateMeanShiftsPerStaffMemberFromShifts shifts) = 4.0/3.0 @>
+    test <@ (calculateMeanShiftsPerStaffMember shifts) = 4.0/3.0 @>
 
 [<Fact>]
 let ``calculates for three shifts with staff overlap correctly``() =
@@ -82,4 +82,4 @@ let ``calculates for three shifts with staff overlap correctly``() =
         }
     |]
 
-    test <@ (calculateMeanShiftsPerStaffMemberFromShifts shifts) = 2.0 @>
+    test <@ (calculateMeanShiftsPerStaffMember shifts) = 2.0 @>
