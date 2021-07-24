@@ -7,6 +7,11 @@ open Scheduling.Scheduler
 open Scheduling.Types
 open Common
 
+// Note: although calculateInitialSchedule is deterministic, these tests do not check for a specific
+// output from it, they just check that the output is a valid schedule, as this is all the function
+// is required to calculate, as there is no definitively "correct" schedule. Therefore is we tweak
+// the logic (for efficiency, elegance, improved fairness, etc.) these tests will not be broken.
+
 let isStaffValid availableStaff expectedStaffCount shift =
     shift.Staff.Length = expectedStaffCount
     && Array.forall
