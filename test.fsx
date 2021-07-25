@@ -36,7 +36,10 @@ let shifts = [|
 #I "NewtonSoft.Json/Newtonsoft.Json.12.0.3/lib/netstandard2.0"
 #I "Google.DataTable.Net.Wrapper/Google.DataTable.Net.Wrapper.4.0.0/lib/netstandard2.0"
 #r "XPlot.GoogleCharts.dll"
+#load "shift_display.fsx"
+
 open XPlot.GoogleCharts
+open Shift_display
 
 let staff = invertShifts shifts
 
@@ -54,21 +57,7 @@ let pieChart =
 
 pieChart.Show()
 
-let staffShiftsMatrix =
-    shifts
-    |> Array.map (fun s ->
-        staff
-        |> Array.map (fun sm ->
-            let working =
-                sm.Shifts
-                |> Array.map (fun sh -> sh.Id)
-                |> Array.contains s.Id
-            sprintf "%s %s" sm.Forename sm.Surname, working))
-
-let scheduleTable =
-    staffShiftsMatrix
-    |> Chart.Table
-    |> Chart.WithLabels (Array.append [|" "|] (Array.map (fun s -> s.Name) shifts))
+let scheduleTable = getStaffShiftsTable shifts staff
 
 scheduleTable.Show()
 
