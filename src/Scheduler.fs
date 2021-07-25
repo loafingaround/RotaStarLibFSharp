@@ -73,53 +73,72 @@ module Scheduler =
             | Error err ->
                 Error err
             | Ok initialSchedule ->
-                let mutable temp = 1500.0
-                let alpha = 0.9
-                let numOfTempReductions = 250
-                let numOfNeighboursToSearch = 20
-
-                let rand = System.Random();
-
                 let shiftCount = Array.length shifts
+                
+                if shiftCount <= 0 then
+                    Ok initialSchedule
+                else
+                    let mutable temp = 1500.0
+                    let alpha = 0.9
+                    let numOfTempReductions = 250
+                    let numOfNeighboursToSearch = 20
 
-                let getDifferentRandomNumbers exclMax =
-                    let first = rand.Next(0, exclMax)
-                    let mutable second = first
-                    while second = first do
-                        second <- rand.Next(0, exclMax)
-                    first, second
+                    let rand = Random();
 
-                // move operator
-                let move (shifts: Shift[]) =
-                    // TODO: can we swap two random shift staff members more elegantly?
-                    let shift1Ix, shift2Ix = getDifferentRandomNumbers shiftCount
-                    let shift1 = shifts.[shift1Ix]
-                    let shift2 = shifts.[shift2Ix]
-                    let shift1StaffIx = rand.Next(0, (Array.length shift1.Staff))
-                    let shift2StaffIx = rand.Next(0, (Array.length shift2.Staff))
-                    let temp = shift2.Staff.[shift2StaffIx]
-                    shift2.Staff.[shift2StaffIx] <- shift1.Staff.[shift1StaffIx]
-                    shift1.Staff.[shift1StaffIx] <- temp
-                    shifts
-
-                let mutable currSchedule = initialSchedule
-
-                for i in 0..numOfNeighboursToSearch do
-                    for j in 0..numOfNeighboursToSearch do
-                        let currCost = calculateCost currSchedule
-
-                        let newSchedule = move currSchedule
-                        let newCost = calculateCost newSchedule
-
-                        if newCost <= currCost then
-                            currSchedule <- newSchedule
+                    let getDifferentRandomNumbers exclMax =
+                        if exclMax <= 1 then
+                            0, 0
                         else
-                            let r = rand.Next(0, 100) |> float |> (/) <| 100.0
+                            let first = rand.Next(0, exclMax)
+                            let mutable second = first
+                            while second = first do
+                                second <- rand.Next(0, exclMax)
+                            first, second
 
-                            let value = 1.0 / Math.Exp((newCost - currCost) / temp)
+                    // move operator
+                    let move (shifts: Shift[]) =
+                        // TODO: ensure we do not end with same staff member on shift more than once
+                        if shiftCount <= 1 then
+                            shifts
+                        else
+                            // TODO: can we swap two random shift staff members more elegantly?
+                            let shift1Ix, shift2Ix = getDifferentRandomNumbers shiftCount
+                            let shift1 = shifts.[shift1Ix]
+                            let shift2 = shifts.[shift2Ix]
+                            let shift1StaffIx = rand.Next(0, (Array.length shift1.Staff))
+                            let shift2StaffIx = rand.Next(0, (Array.length shift2.Staff))
+                            let temp = shift2.Staff.[shift2StaffIx]
+                            shift2.Staff.[shift2StaffIx] <- shift1.Staff.[shift1StaffIx]
+                            shift1.Staff.[shift1StaffIx] <- temp
+                            shifts
 
-                            if r <= value then
+                    let mutable currSchedule = initialSchedule
+
+                    for i in 0..numOfTempReductions do
+                        for j in 0..numOfNeighboursToSearch do
+                            let currCost = calculateCost currSchedule
+
+                            let newSchedule = move currSchedule
+                            let newCost = calculateCost newSchedule
+
+                            printfn "Current schedule: %s" (String.Join(", ", currSchedule |> Array.map (fun s -> Array.length s.Staff)))
+
+                            printfn "New cost %f <= current cost %f?" newCost currCost
+                            if newCost <= currCost then
+                                printfn "\tYes"
                                 currSchedule <- newSchedule
+                            else
+                                printfn "\tNo"
+                                let r = rand.Next(0, 100) |> float |> (/) <| 100.0
+
+                                let value = 1.0 / Math.Exp((newCost - currCost) / temp)
+
+                                printfn "Random no. %f <= value %f?" r value
+                                if r <= value then
+                                    printfn "\tYes"
+                                    currSchedule <- newSchedule
+                                else
+                                    printfn "\tNo"
 
                         temp <- temp * alpha
-                Ok currSchedule
+                    Ok currSchedule
