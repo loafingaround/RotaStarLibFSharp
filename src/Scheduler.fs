@@ -77,20 +77,21 @@ module Scheduler =
     // move operator
     let moveToNeigbour nextRandom getDiffRandoms (shifts: Shift[]) =
         // TODO: ensure we do not end with same staff member on shift more than once
-        let shiftCount = Array.length shifts
+        let clone = Array.map (fun s -> { s with Staff = Array.copy s.Staff }) shifts
+        let shiftCount = Array.length clone
         if shiftCount <= 1 then
-            shifts
+            clone
         else
             // TODO: can we swap two random shift staff members more elegantly?
             let shift1Ix, shift2Ix = getDiffRandoms nextRandom shiftCount
-            let shift1 = shifts.[shift1Ix]
-            let shift2 = shifts.[shift2Ix]
+            let shift1 = clone.[shift1Ix]
+            let shift2 = clone.[shift2Ix]
             let shift1StaffIx = nextRandom(0, (Array.length shift1.Staff))
             let shift2StaffIx = nextRandom(0, (Array.length shift2.Staff))
             let temp = shift2.Staff.[shift2StaffIx]
             shift2.Staff.[shift2StaffIx] <- shift1.Staff.[shift1StaffIx]
             shift1.Staff.[shift1StaffIx] <- temp
-            shifts
+            clone
 
     let calculateSchedule shifts staff =
         match meetsHardConstraints shifts staff with
