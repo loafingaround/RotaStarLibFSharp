@@ -10,6 +10,8 @@
     <Compile Include="Common.fs" />
     <Compile Include="CalculateAverageShiftsPerStaffMemberTests.fs" />
     <Compile Include="InvertShiftsTests.fs" />
+    <Compile Include="GetDifferentRandomNumbersTests.fs" />
+    <Compile Include="MoveToNeighbourTests.fs" />
     <Compile Include="CalculateInitialScheduleTests.fs" />
     <Compile Include="CalculateScheduleTests.fs" />
     <Compile Include="CalculateVarianceTests.fs" />

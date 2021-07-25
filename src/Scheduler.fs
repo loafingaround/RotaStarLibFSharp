@@ -64,6 +64,34 @@ module Scheduler =
                 { shifts.[i] with Staff = picked }
         |]
 
+    let getDifferentRandomNumbers nextRandom exclMax =
+        if exclMax <= 1 then
+            0, 0
+        else
+            let first = nextRandom(0, exclMax)
+            let mutable second = first
+            while second = first do
+                second <- nextRandom(0, exclMax)
+            first, second
+
+    // move operator
+    let moveToNeigbour nextRandom getDiffRandoms (shifts: Shift[]) =
+        // TODO: ensure we do not end with same staff member on shift more than once
+        let shiftCount = Array.length shifts
+        if shiftCount <= 1 then
+            shifts
+        else
+            // TODO: can we swap two random shift staff members more elegantly?
+            let shift1Ix, shift2Ix = getDiffRandoms nextRandom shiftCount
+            let shift1 = shifts.[shift1Ix]
+            let shift2 = shifts.[shift2Ix]
+            let shift1StaffIx = nextRandom(0, (Array.length shift1.Staff))
+            let shift2StaffIx = nextRandom(0, (Array.length shift2.Staff))
+            let temp = shift2.Staff.[shift2StaffIx]
+            shift2.Staff.[shift2StaffIx] <- shift1.Staff.[shift1StaffIx]
+            shift1.Staff.[shift1StaffIx] <- temp
+            shifts
+
     let calculateSchedule shifts staff =
         match meetsHardConstraints shifts staff with
         | Error requirement ->
@@ -85,40 +113,13 @@ module Scheduler =
 
                     let rand = Random();
 
-                    let getDifferentRandomNumbers exclMax =
-                        if exclMax <= 1 then
-                            0, 0
-                        else
-                            let first = rand.Next(0, exclMax)
-                            let mutable second = first
-                            while second = first do
-                                second <- rand.Next(0, exclMax)
-                            first, second
-
-                    // move operator
-                    let move (shifts: Shift[]) =
-                        // TODO: ensure we do not end with same staff member on shift more than once
-                        if shiftCount <= 1 then
-                            shifts
-                        else
-                            // TODO: can we swap two random shift staff members more elegantly?
-                            let shift1Ix, shift2Ix = getDifferentRandomNumbers shiftCount
-                            let shift1 = shifts.[shift1Ix]
-                            let shift2 = shifts.[shift2Ix]
-                            let shift1StaffIx = rand.Next(0, (Array.length shift1.Staff))
-                            let shift2StaffIx = rand.Next(0, (Array.length shift2.Staff))
-                            let temp = shift2.Staff.[shift2StaffIx]
-                            shift2.Staff.[shift2StaffIx] <- shift1.Staff.[shift1StaffIx]
-                            shift1.Staff.[shift1StaffIx] <- temp
-                            shifts
-
                     let mutable currSchedule = initialSchedule
 
                     for i in 0..numOfTempReductions do
                         for j in 0..numOfNeighboursToSearch do
                             let currCost = calculateCost currSchedule
 
-                            let newSchedule = move currSchedule
+                            let newSchedule = moveToNeigbour rand.Next getDifferentRandomNumbers currSchedule
                             let newCost = calculateCost newSchedule
 
                             printfn "Current schedule: %s" (String.Join(", ", currSchedule |> Array.map (fun s -> Array.length s.Staff)))

@@ -77,3 +77,11 @@ let britte =
         UnavailableDates = Array.empty
         Shifts = Array.empty
     }
+
+// utility
+
+let getNextRandomFunc (sequence: 'a seq) =
+    let enumerator = sequence.GetEnumerator()
+    fun (_, _) ->
+        enumerator.MoveNext() |> ignore
+        enumerator.Current
