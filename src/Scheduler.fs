@@ -67,6 +67,8 @@ module Scheduler =
     let getDifferentRandomNumbers nextRandom exclMax =
         if exclMax <= 1 then
             0, 0
+        else if exclMax = 2 then
+            0, 1
         else
             let first = nextRandom(0, exclMax)
             let mutable second = first
@@ -74,24 +76,57 @@ module Scheduler =
                 second <- nextRandom(0, exclMax)
             first, second
 
-    // move operator
-    let moveToNeigbour nextRandom getDiffRandoms (shifts: Shift[]) =
+    let allButOneIsSubsetOfOthers (arrays: 'a[][]) =
+        let sets = Array.map set arrays
+        let subsets = Array.filter (fun s -> true) sets // TODO
+        true
+
+    let swapStaffMembers (nextRandom: int * int -> int) getDiffRandoms (shifts: Shift[]) =
         // TODO: ensure we do not end with same staff member on shift more than once
+        // TODO: try again if randomly selected shift has no staff
         let clone = Array.map (fun s -> { s with Staff = Array.copy s.Staff }) shifts
         let shiftCount = Array.length clone
-        if shiftCount <= 1 then
-            clone
-        else
-            // TODO: can we swap two random shift staff members more elegantly?
+
+        let getIndices () =
             let shift1Ix, shift2Ix = getDiffRandoms nextRandom shiftCount
-            let shift1 = clone.[shift1Ix]
-            let shift2 = clone.[shift2Ix]
-            let shift1StaffIx = nextRandom(0, (Array.length shift1.Staff))
-            let shift2StaffIx = nextRandom(0, (Array.length shift2.Staff))
-            let temp = shift2.Staff.[shift2StaffIx]
-            shift2.Staff.[shift2StaffIx] <- shift1.Staff.[shift1StaffIx]
-            shift1.Staff.[shift1StaffIx] <- temp
+            let shift1StaffCount = Array.length shifts.[shift1Ix].Staff
+            let shift2StaffCount = Array.length shifts.[shift2Ix].Staff
+            let shift1StaffIx = nextRandom(0, shift1StaffCount)
+            let shift2StaffIx = nextRandom(0, shift2StaffCount)
+            (shift1Ix, shift1StaffIx), (shift2Ix, shift2StaffIx)
+
+        let swap (shifts: Shift[]) =
+            // TODO: keep trying until 2 selected staff are not the same
+            // TODO: introduce safety limit to prevent inifinite loop???
+            let mutable ((shift1Ix, shift1StaffIx), (shift2Ix, shift2StaffIx)) = getIndices()
+            while shifts.[shift1Ix].Staff.[shift1StaffIx] = shifts.[shift2Ix].Staff.[shift2StaffIx] do
+                match getIndices() with
+                    | ((shift1Ix, shift1StaffIx), (shift2Ix, shift2StaffIx)) ->
+                        // TODO: return shifts unchanged if each staff lists is a subset of at least one other                
+                        // TODO: can we swap two random shift staff members more elegantly?
+                        let temp = shifts.[shift2Ix].Staff.[shift2StaffIx]
+                        shifts.[shift2Ix].Staff.[shift2StaffIx] <- shifts.[shift1Ix].Staff.[shift1StaffIx]
+                        shifts.[shift1Ix].Staff.[shift1StaffIx] <- temp
+            shifts
+
+
+        match clone with
+        | [||] ->
             clone
+        | [|_|] ->
+            clone
+        | _ ->
+            if allButOneIsSubsetOfOthers (Array.map (fun s -> s.Staff) clone) then
+                clone
+            else
+                swap clone
+
+    // move operator
+    // TODO: improve: for ex. rather than only swapping staff between shifts, could replace individual
+    // staff from available staff (is it possible there could be staff that have not been assigned to a
+    // shift in the initial schedule?)
+    let moveToNeigbour nextRandom getDiffRandoms (shifts: Shift[]) =
+        swapStaffMembers nextRandom getDiffRandoms shifts
 
     let calculateSchedule shifts staff =
         match meetsHardConstraints shifts staff with

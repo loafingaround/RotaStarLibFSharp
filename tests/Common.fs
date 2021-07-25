@@ -78,6 +78,15 @@ let britte =
         Shifts = Array.empty
     }
 
+let lola =
+    {
+        Id = 3
+        Forename = "Lola"
+        Surname = "Tillinger"
+        UnavailableDates = Array.empty
+        Shifts = Array.empty
+    }
+
 // utility
 
 let getNextRandomFunc (sequence: 'a seq) =
