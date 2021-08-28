@@ -13,6 +13,7 @@
     <Compile Include="Scheduler/GetDifferentRandomNumbersTests.fs" />
     <Compile Include="Scheduler/SwapStaffMembersTests.fs" />
     <Compile Include="Scheduler/CalculateInitialScheduleTests.fs" />
+    <Compile Include="SimulatedAnnealingScheduler/CalculateInitialScheduleTests.fs" />
     <Compile Include="Scheduler/CalculateScheduleTests.fs" />
     <Compile Include="Scheduler/CalculateVarianceTests.fs" />
     <Compile Include="Utilities/ShiftsToCsvTests.fs" />

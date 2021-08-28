@@ -1,16 +1,11 @@
-module CalculateInitialScheduleTestsOld
+module CalculateInitialScheduleTests
 
 open System
 open Xunit
 open Swensen.Unquote
-open Scheduling.Scheduler
+open Scheduling.SimulatedAnnealingScheduler
 open Scheduling.Types
 open Common
-
-// Note: although calculateInitialSchedule is deterministic, these tests do not check for a specific
-// output from it, they just check that the output is a valid schedule, as this is all the function
-// is required to calculate, as there is no definitively "correct" schedule. Therefore is we tweak
-// the logic (for efficiency, elegance, improved fairness, etc.) these tests will not be broken.
 
 let isStaffValid availableStaff expectedStaffCount shift =
     shift.Staff.Length = expectedStaffCount
@@ -28,7 +23,7 @@ let getIds items =
     Array.map (fun s -> s.Id) items
 
 [<Fact>]
-let ``0 shifts, 1 staff member``() =
+let ``Calculates expected schedule for 0 shifts with 1 available staff member``() =
     let shifts: Shift[] = Array.empty
 
     let staff = [|
@@ -36,11 +31,11 @@ let ``0 shifts, 1 staff member``() =
     |]
 
     let expected: Shift[] = Array.empty
-    
+
     test <@ (calculateInitialSchedule shifts staff) = Ok expected @>
 
 [<Fact>]
-let ``1 shift max 1, 1 staff member``() =
+let ``Calculates expected schedule for 1 shift with max 1 staff and 1 available staff member``() =
     let shift = { succeedInBusiness with MaximumNumberOfStaff = 1 }
     let shifts = [|
         shift
@@ -57,7 +52,7 @@ let ``1 shift max 1, 1 staff member``() =
     test <@ (calculateInitialSchedule shifts staff) = Ok expected @>
 
 [<Fact>]
-let ``1 shift max 2, 1 staff member``() =
+let ``Calculates expected schedule for 1 shift with max 2 staff and 1 available staff member``() =
     let shift = { succeedInBusiness with MaximumNumberOfStaff = 2 }
     let shifts = [|
         shift
@@ -74,7 +69,7 @@ let ``1 shift max 2, 1 staff member``() =
     test <@ (calculateInitialSchedule shifts staff) = Ok expected @>
 
 [<Fact>]
-let ``1 shifts max 2, 2 staff members``() =
+let ``Calculates a valid schedule for 1 shift max 2 staff and 2 available staff members``() =
     let shift = { succeedInBusiness with MaximumNumberOfStaff = 2 }
     let shifts = [|
         shift
@@ -96,7 +91,7 @@ let ``1 shifts max 2, 2 staff members``() =
     test <@ isStaffValid staff expectedStaffCount actualShift @>
 
 [<Fact>]
-let ``1 shift max 2, 3 staff members``() =
+let ``Calculates a valid schedule for 1 shift with max 2 staff and 3 available staff members``() =
     let shift = { succeedInBusiness with MaximumNumberOfStaff = 2 }
     let shifts = [|
         shift
@@ -119,7 +114,7 @@ let ``1 shift max 2, 3 staff members``() =
     test <@ isStaffValid staff expectedStaffCount actualShift @>
 
 [<Fact>]
-let ``1 shift max 2, 1 shift max 1, 3 staff members``() =
+let ``Calculates a valid schedule for 1 shift max 2 staff members, 1 shift with max 1 staff members and 3 available staff members``() =
     let shift1 = { succeedInBusiness with MaximumNumberOfStaff = 2 }
     let shift2 = { assassins with MaximumNumberOfStaff = 1 }
     let shifts = [|
@@ -147,7 +142,7 @@ let ``1 shift max 2, 1 shift max 1, 3 staff members``() =
     test <@ isStaffValid staff expectedStaffCountShift2 actualShift2 @>
 
 [<Fact>]
-let ``20 shifts different maximums, 16 staff members``() =
+let ``Calculates a valid schedule for 20 shifts different maximum staff members and 16 staff members``() =
     let numbers = [|0..19|]
 
     let shifts = [|
