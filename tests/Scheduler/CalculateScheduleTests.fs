@@ -1,4 +1,4 @@
-module CalculateScheduleTests
+module CalculateScheduleTestsOld
 
 open Xunit
 open Swensen.Unquote
