@@ -1,4 +1,4 @@
-module calculateVarianceTests
+module CalculateMeanShiftsPerStaffMemberTests
 
 open Xunit
 open Swensen.Unquote
@@ -7,15 +7,15 @@ open Scheduling.Types
 open Common
 
 [<Fact>]
-let ``calculates for single shift single staff member correctly``() =
+let ``Calculates for single shift single staff member correctly``() =
     let shifts = [|
         { assassins with Staff = [| nancey |] }
     |]
 
-    test <@ (calculateVariance shifts) = 0.0 @>
+    test <@ (calculateMeanShiftsPerStaffMember shifts) = 1.0 @>
 
 [<Fact>]
-let ``calculates for single shift two staff correctly``() =
+let ``Calculates for single shift two staff correctly``() =
     let shifts = [|
         { assassins with Staff =
                             [|
@@ -24,19 +24,19 @@ let ``calculates for single shift two staff correctly``() =
                             |] }
     |]
 
-    test <@ (calculateVariance shifts) = 0.0 @>
+    test <@ (calculateMeanShiftsPerStaffMember shifts) = 1.0 @>
 
 [<Fact>]
-let ``calculates for two shifts single staff member correctly``() =
+let ``Calculates for two shifts single staff member correctly``() =
     let shifts = [|
         { assassins with Staff = [| nancey |] }
         { dixie with Staff = [| nancey |] }
     |]
 
-    test <@ (calculateVariance shifts) = 0.0 @>
+    test <@ (calculateMeanShiftsPerStaffMember shifts) = 2.0 @>
 
 [<Fact>]
-let ``calculates for two shifts with staff overlap correctly``() =
+let ``Calculates for two shifts with staff overlap correctly``() =
     let shifts = [|
         {
             assassins with Staff =
@@ -54,10 +54,10 @@ let ``calculates for two shifts with staff overlap correctly``() =
         }
     |]
 
-    test <@ (calculateVariance shifts) = 2.0/9.0 @>
+    test <@ (calculateMeanShiftsPerStaffMember shifts) = 4.0/3.0 @>
 
 [<Fact>]
-let ``calculates for three shifts with staff overlap correctly``() =
+let ``Calculates for three shifts with staff overlap correctly``() =
     let shifts = [|
         {
             assassins with Staff =
@@ -82,36 +82,4 @@ let ``calculates for three shifts with staff overlap correctly``() =
         }
     |]
 
-    test <@ (calculateVariance shifts) = 2.0/3.0 @>
-
-[<Fact>]
-let ``calculates for four shifts with very unfair staffing correctly``() =
-    let shifts = [|
-        {
-            assassins with Staff =
-                            [|
-                                nancey
-                                cheryl
-                            |]
-        }
-        {
-            dixie with Staff =
-                            [|
-                                cheryl
-                            |]
-        }
-        {
-            priscilla with Staff =
-                            [|
-                                cheryl
-                            |]
-        }
-        {
-            succeedInBusiness with Staff =
-                                    [|
-                                        cheryl
-                                    |]
-        }
-    |]
-
-    test <@ (calculateVariance shifts) = 2.25 @>
+    test <@ (calculateMeanShiftsPerStaffMember shifts) = 2.0 @>

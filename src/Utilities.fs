@@ -1,9 +1,35 @@
 module Utilities
 
-open System
 open System.IO
 open Scheduling.Types
 open System.Collections.Generic
+
+let invertShifts shifts =
+    shifts
+    |> Array.collect (fun s -> s.Staff |> Array.map (fun sm -> sm, { s with Staff = Array.empty }))
+    |> Array.groupBy fst
+    |> Array.map (fun g -> { fst g with Shifts = snd g |> Array.map (fun ss -> snd ss) })
+
+let calculateMeanShiftsPerStaffMember shifts =
+    let shiftStaff =
+        shifts
+        |> Array.collect (fun s -> s.Staff)
+    let uniqueStaff = Array.distinct shiftStaff
+    (float) shiftStaff.Length / (float) uniqueStaff.Length
+
+let calculateVariance (calculateMeanShiftsPerStaffMember: Shift[] -> float) shifts =
+    let mean = (float) (calculateMeanShiftsPerStaffMember shifts)
+    let shiftCounts =
+        shifts
+        |> Array.collect (fun s -> s.Staff)
+        |> Array.groupBy id
+        |> Array.map (fun g -> (float) (snd g).Length)
+
+    let total =
+        shiftCounts
+        |> Array.sumBy (fun c -> (c - mean) ** 2.0)
+
+    total / (float) shiftCounts.Length
 
 let shiftsToCsv shifts =
     let staff = Dictionary<int, string>()

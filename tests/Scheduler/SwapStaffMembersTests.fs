@@ -159,7 +159,7 @@ let ``swaps different staff members``() =
 
     test <@ actual = expected @>
 
-[<Fact>]
+[<Fact(Skip="X")>]
 let ``swaps randomly selected staff members``() =
 
     let shifts = [|

@@ -1,4 +1,4 @@
-module shiftsToCsvTests
+module ShiftsToCsvTests
 
 open Xunit
 open Swensen.Unquote

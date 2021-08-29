@@ -2,7 +2,7 @@ module InvertShiftsTests
 
 open Xunit
 open Swensen.Unquote
-open Scheduling.Scheduler
+open Utilities
 open Scheduling.Types
 open Common
 

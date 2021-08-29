@@ -2,7 +2,7 @@ namespace Scheduling
 
 module SimulatedAnnealingScheduler =
 
-    open System
+    open Utilities
     open Types
 
     let calculateInitialSchedule (shifts: Shift[]) (staff: StaffMember[]) =
@@ -24,7 +24,7 @@ module SimulatedAnnealingScheduler =
         |]
 
     let calculateCost shifts =
-        failwith "Not implemented"
+        calculateVariance shifts
 
     let moveToNeighbour shifts staff =
         failwith "Not implemented"

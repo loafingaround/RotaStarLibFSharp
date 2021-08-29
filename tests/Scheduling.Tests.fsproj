@@ -8,14 +8,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common.fs" />
-    <Compile Include="Scheduler/CalculateAverageShiftsPerStaffMemberTests.fs" />
-    <Compile Include="Scheduler/InvertShiftsTests.fs" />
     <Compile Include="Scheduler/GetDifferentRandomNumbersTests.fs" />
     <Compile Include="Scheduler/SwapStaffMembersTests.fs" />
-    <Compile Include="Scheduler/CalculateInitialScheduleTests.fs" />
-    <Compile Include="SimulatedAnnealingScheduler/CalculateInitialScheduleTests.fs" />
     <Compile Include="Scheduler/CalculateScheduleTests.fs" />
-    <Compile Include="Scheduler/CalculateVarianceTests.fs" />
+    <Compile Include="SimulatedAnnealingScheduler/CalculateInitialScheduleTests.fs" />
+    <Compile Include="Utilities/CalculateMeanShiftsPerStaffMemberTests.fs" />
+    <Compile Include="Utilities/CalculateVarianceTests.fs" />
+    <Compile Include="Utilities/InvertShiftsTests.fs" />
     <Compile Include="Utilities/ShiftsToCsvTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
