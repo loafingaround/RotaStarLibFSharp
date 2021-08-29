@@ -80,9 +80,18 @@ let britte =
 
 let lola =
     {
-        Id = 3
+        Id = 4
         Forename = "Lola"
         Surname = "Tillinger"
+        UnavailableDates = Array.empty
+        Shifts = Array.empty
+    }
+
+let mary =
+    {
+        Id = 5
+        Forename = "Mary"
+        Surname = "Frapston"
         UnavailableDates = Array.empty
         Shifts = Array.empty
     }
@@ -92,5 +101,12 @@ let lola =
 let getNextRandomFunc (sequence: 'a seq) =
     let enumerator = sequence.GetEnumerator()
     fun (_, _) ->
+        enumerator.MoveNext() |> ignore
+        enumerator.Current
+
+// TODO: remove getNextRandomFunc and rename this as getNextRandomFunc when we've got rid of dependent code 
+let getNextRandomFunc2 (sequence: 'a seq) =
+    let enumerator = sequence.GetEnumerator()
+    fun _ ->
         enumerator.MoveNext() |> ignore
         enumerator.Current

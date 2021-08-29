@@ -26,10 +26,29 @@ module SimulatedAnnealingScheduler =
     let calculateCost shifts =
         calculateVariance shifts
 
-    let moveToNeighbour shifts staff =
-        failwith "Not implemented"
+    let moveToNeighbour nextRandom shifts availableStaff =
+        // TODO: ensure we are not mutating inputs
+        match availableStaff with
+        | [||] ->
+            shifts
+        | _ ->
+            let shiftsWithStaff =
+                shifts
+                |> Array.filter (fun s -> not (Array.isEmpty s.Staff))
+            match shiftsWithStaff with
+            | [||] ->
+                shifts
+            | _ ->
+                let shiftIx = nextRandom (Array.length shiftsWithStaff)
+                let shift = shiftsWithStaff.[shiftIx]
+                let staffMemberIx = nextRandom (Array.length shift.Staff)
+                // TODO: keep trying if selected available staff member is same as the existing staff member on the shift?
+                let availableStaffMemberIx = nextRandom (Array.length availableStaff)
+                shift.Staff.[staffMemberIx] <- availableStaff.[availableStaffMemberIx]
+                shifts
 
     let satisfiesHardConstraints shifts =
+        // TODO: include possibility of same staff member on shift more than once
         failwith "Not implemented"
 
     // if solution fails to satisfy hard constraints we apply a penalty to the cost
