@@ -6,10 +6,12 @@
 #r "XPlot.GoogleCharts.dll"
 #load "shift_display.fsx"
 
+open XPlot.GoogleCharts
 open Shift_display
-open Scheduling.Scheduler
+open Scheduling.SimulatedAnnealingScheduler
 open Scheduling.Types
 open Common
+open Utilities
 
 // data
 
@@ -24,14 +26,35 @@ let shifts = [|
 // display
 
 let showSchedule shifts =
-    printfn "Displaying shifts..."
+    printfn "Displaying shifts table..."
     let scheduleTable = getStaffShiftsTable shifts staff
     scheduleTable.Show()
+    printfn "Shifts table rendered."
 
 // logic
 
-match calculateSchedule shifts staff with
-| Error err ->
+match calculateSchedule nextRandom shifts staff with
+| Error _ ->
     printfn "Something went wrong"
-| Ok initialSchedule ->
-    showSchedule initialSchedule
+| Ok schedule ->
+    showSchedule schedule
+
+    let staff = invertShifts schedule
+    for s in staff do
+        printfn "No. of shifts: %i" (Array.length s.Shifts)
+
+    printfn "Showing shifts per staff pie chart..."
+    let shiftCountByStaffMember =
+        staff
+        |> Array.map (fun sm -> sprintf "%s %s (%i shifts)" sm.Forename sm.Surname sm.Shifts.Length, sm.Shifts.Length)
+        |> Array.toList
+
+    let pieChart =
+        shiftCountByStaffMember
+        |> Chart.Pie
+        |> Chart.WithTitle "Shifts by staff member"
+        |> Chart.WithLegend true
+        |> Chart.WithSize (1000, 1000)
+
+    pieChart.Show()
+    printfn "Shifts per staff pie chart rendered."
