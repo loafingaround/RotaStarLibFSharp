@@ -2,17 +2,19 @@ namespace Scheduling
 
 module SimulatedAnnealingScheduler =
 
+    open System
     open Utilities
     open Types
 
     let calculateInitialSchedule (shifts: Shift[]) (staff: StaffMember[]) =
+        // TODO: ensure we are not mutating inputs (maybe wait until we have changed collections to be immutable)
         let pick shift =
             staff
             // TODO: assign and sort by weighting according existing number of shifts, shift preferences etc.
             |> Array.sortBy (fun s -> s.Shifts.Length)
             |> Array.truncate shift.MaximumNumberOfStaff
 
-        Ok [|
+        [|
             for i in 0..shifts.Length - 1 ->
                 let picked = pick shifts.[i]
 
@@ -24,7 +26,7 @@ module SimulatedAnnealingScheduler =
         |]
 
     let calculateCost shifts =
-        calculateVariance shifts
+        calculateVariance calculateMeanShiftsPerStaffMember shifts
 
     let moveToNeighbour nextRandom shifts staff =
         match staff with
@@ -57,5 +59,33 @@ module SimulatedAnnealingScheduler =
         // TODO
         failwith "Not implemented"
 
-    let calculateSchedule shifts staff =
-        failwith "Not implemented"
+    let calculateSchedule nextRandom shifts staff =
+        if Array.isEmpty shifts then
+            Error NoShifts
+        else if Array.isEmpty staff then
+            Error NoStaff
+        else
+            let mutable temp = 1500.0
+            let alpha = 0.9
+            let numOfTempReductions = 250
+            let numOfNeighboursToSearch = 20
+
+            let mutable currSchedule = calculateInitialSchedule shifts staff
+
+            for _ in 0..numOfTempReductions do
+                for _ in 0..numOfNeighboursToSearch do
+                    let currCost = calculateCost currSchedule
+
+                    let newSchedule = moveToNeighbour nextRandom currSchedule staff
+                    let newCost = calculateCost newSchedule
+
+                    if newCost <= currCost then
+                        currSchedule <- newSchedule
+                    else
+                        let random = nextRandom 100 |> float |> (/) <| 100.0
+                        let acceptanceProbability = 1.0 / Math.Exp((newCost - currCost) / temp)
+
+                        if random <= acceptanceProbability then
+                            currSchedule <- newSchedule
+                temp <- temp * alpha
+            Ok currSchedule

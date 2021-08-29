@@ -13,12 +13,6 @@ let isStaffValid availableStaff expectedStaffCount shift =
         (fun (sm: StaffMember) -> Array.exists (fun (asm: StaffMember) -> sm.Id = asm.Id) availableStaff)
         shift.Staff
 
-let unwrapValue = function
-    | Ok schedule ->
-        schedule
-    | Error _ ->
-        [||]
-
 let getIds items =
     Array.map (fun s -> s.Id) items
 
@@ -32,7 +26,7 @@ let ``Calculates expected schedule for 0 shifts with 1 available staff member``(
 
     let expected: Shift[] = Array.empty
 
-    test <@ (calculateInitialSchedule shifts staff) = Ok expected @>
+    test <@ calculateInitialSchedule shifts staff = expected @>
 
 [<Fact>]
 let ``Calculates expected schedule for 1 shift with max 1 staff and 1 available staff member``() =
@@ -49,7 +43,7 @@ let ``Calculates expected schedule for 1 shift with max 1 staff and 1 available 
         { shift with Staff = [|nancey|] }
     |]
     
-    test <@ (calculateInitialSchedule shifts staff) = Ok expected @>
+    test <@ calculateInitialSchedule shifts staff = expected @>
 
 [<Fact>]
 let ``Calculates expected schedule for 1 shift with max 2 staff and 1 available staff member``() =
@@ -66,7 +60,7 @@ let ``Calculates expected schedule for 1 shift with max 2 staff and 1 available 
         { shift with Staff = [|nancey|] }
     |]
     
-    test <@ (calculateInitialSchedule shifts staff) = Ok expected @>
+    test <@ calculateInitialSchedule shifts staff = expected @>
 
 [<Fact>]
 let ``Calculates a valid schedule for 1 shift max 2 staff and 2 available staff members``() =
@@ -80,7 +74,7 @@ let ``Calculates a valid schedule for 1 shift max 2 staff and 2 available staff 
         nancey
     |]
 
-    let actual = unwrapValue (calculateInitialSchedule shifts staff)
+    let actual = calculateInitialSchedule shifts staff
 
     let expectedStaffCount = 2
     
@@ -103,7 +97,7 @@ let ``Calculates a valid schedule for 1 shift with max 2 staff and 3 available s
         britte
     |]
 
-    let actual = unwrapValue (calculateInitialSchedule shifts staff)
+    let actual = calculateInitialSchedule shifts staff
 
     let expectedStaffCount = 2
     
@@ -128,7 +122,7 @@ let ``Calculates a valid schedule for 1 shift max 2 staff members, 1 shift with 
         nancey
     |]
     
-    let actual = unwrapValue (calculateInitialSchedule shifts staff)
+    let actual = calculateInitialSchedule shifts staff
 
     let expectedStaffCountShift1 = 2
     let expectedStaffCountShift2 = 1
@@ -169,7 +163,7 @@ let ``Calculates a valid schedule for 20 shifts different maximum staff members 
         }
     |]
     
-    let actual = unwrapValue (calculateInitialSchedule shifts staff)
+    let actual = calculateInitialSchedule shifts staff
 
     test <@ Set (getIds actual) = Set (getIds shifts) @>
 

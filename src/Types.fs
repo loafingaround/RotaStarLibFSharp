@@ -28,6 +28,10 @@ module Types =
         MaximumNumberOfStaff: int
     }
 
+    type CalculationError =
+        | NoShifts
+        | NoStaff
+
     type ShiftRequirement =
         | MinimumNumberOfStaff of required: int * actual: int
         | MinimumNumberOfFirstAiders of reqired: int * actual: int
