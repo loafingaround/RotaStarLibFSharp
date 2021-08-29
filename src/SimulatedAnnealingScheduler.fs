@@ -26,26 +26,27 @@ module SimulatedAnnealingScheduler =
     let calculateCost shifts =
         calculateVariance shifts
 
-    let moveToNeighbour nextRandom shifts availableStaff =
-        // TODO: ensure we are not mutating inputs
-        match availableStaff with
+    let moveToNeighbour nextRandom shifts staff =
+        match staff with
         | [||] ->
             shifts
         | _ ->
-            let shiftsWithStaff =
+            let shiftsWithStaffIndices =
                 shifts
-                |> Array.filter (fun s -> not (Array.isEmpty s.Staff))
-            match shiftsWithStaff with
+                |> Array.mapi (fun i s -> if Array.isEmpty s.Staff then None else Some i)
+                |> Array.choose id
+            match shiftsWithStaffIndices with
             | [||] ->
                 shifts
             | _ ->
-                let shiftIx = nextRandom (Array.length shiftsWithStaff)
-                let shift = shiftsWithStaff.[shiftIx]
-                let staffMemberIx = nextRandom (Array.length shift.Staff)
-                // TODO: keep trying if selected available staff member is same as the existing staff member on the shift?
-                let availableStaffMemberIx = nextRandom (Array.length availableStaff)
-                shift.Staff.[staffMemberIx] <- availableStaff.[availableStaffMemberIx]
-                shifts
+                let shiftsCopy = Array.copy shifts
+                let shiftIndicesIx = nextRandom (Array.length shiftsWithStaffIndices)
+                let shiftIx = shiftsWithStaffIndices.[shiftIndicesIx]
+                let shiftCopy =  { shiftsCopy.[shiftIx] with Staff = shiftsCopy.[shiftIx].Staff }
+                let shiftStaffMemberIx = nextRandom (Array.length shiftCopy.Staff)
+                let staffMemberIx = nextRandom (Array.length staff)
+                shiftCopy.Staff.[shiftStaffMemberIx] <- staff.[staffMemberIx]
+                shiftsCopy
 
     let satisfiesHardConstraints shifts =
         // TODO: include possibility of same staff member on shift more than once
