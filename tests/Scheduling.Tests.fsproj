@@ -8,9 +8,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common.fs" />
-    <Compile Include="Scheduler/GetDifferentRandomNumbersTests.fs" />
-    <Compile Include="Scheduler/SwapStaffMembersTests.fs" />
-    <Compile Include="Scheduler/CalculateScheduleTests.fs" />
     <Compile Include="SimulatedAnnealingScheduler/MoveToNeighbourTests.fs" />
     <Compile Include="SimulatedAnnealingScheduler/CalculateInitialScheduleTests.fs" />
     <Compile Include="SimulatedAnnealingScheduler/CalculateScheduleTests.fs" />

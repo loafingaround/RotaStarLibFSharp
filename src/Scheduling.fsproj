@@ -5,7 +5,6 @@
   <ItemGroup>
     <Compile Include="Types.fs" />
     <Compile Include="Utilities.fs" />
-    <Compile Include="Scheduler.fs" />
     <Compile Include="SimulatedAnnealingScheduler.fs" />
   </ItemGroup>
 </Project>
