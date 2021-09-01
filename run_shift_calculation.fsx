@@ -40,8 +40,6 @@ match calculateSchedule nextRandom shifts staff with
     showSchedule schedule
 
     let staff = invertShifts schedule
-    for s in staff do
-        printfn "No. of shifts: %i" (Array.length s.Shifts)
 
     printfn "Showing shifts per staff pie chart..."
     let shiftCountByStaffMember =

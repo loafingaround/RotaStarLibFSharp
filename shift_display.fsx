@@ -14,8 +14,7 @@ let getStaffShiftsTable shifts staff =
             |> Array.map (fun sm ->
                 let working =
                     sm.Shifts
-                    |> Array.map (fun sh -> sh.Id)
-                    |> Array.contains s.Id
+                    |> Array.exists (fun sh -> sh.Id = s.Id)
                 sprintf "%s %s" sm.Forename sm.Surname, working))
 
     staffShiftsMatrix
