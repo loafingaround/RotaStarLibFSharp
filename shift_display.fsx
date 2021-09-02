@@ -6,6 +6,9 @@
 open XPlot.GoogleCharts
 open Scheduling.Types
 
+// TODO: fix this: it's showing crosses (as opposed to ticks) everywhere
+// Maybe it was relying on staff on shifts from initial schedule
+// calculation in turn having shifts (which they don't now)?
 let getStaffShiftsTable shifts staff =
     let staffShiftsMatrix =
         shifts

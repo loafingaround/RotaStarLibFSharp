@@ -27,6 +27,7 @@ module SimulatedAnnealingScheduler =
                 { shifts.[i] with Staff = picked |> Array.map (fun smsc -> fst smsc) }
         |]
 
+    // TODO: pass in calculateMeanShiftsPerStaffMember
     let calculateCost shifts =
         calculateVariance calculateMeanShiftsPerStaffMember shifts
 
