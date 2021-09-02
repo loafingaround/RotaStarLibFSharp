@@ -1,6 +1,5 @@
 module CalculateScheduleTests
 
-open System
 open Xunit
 open Swensen.Unquote
 open Scheduling.SimulatedAnnealingScheduler

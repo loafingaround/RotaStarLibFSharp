@@ -8,21 +8,23 @@ module SimulatedAnnealingScheduler =
 
     let calculateInitialSchedule (shifts: Shift[]) (staff: StaffMember[]) =
         // TODO: ensure we are not mutating inputs (maybe wait until we have changed collections to be immutable)
+        let staffWithShiftCounts = staff |> Array.map (fun sm -> sm, 0)
+
         let pick shift =
-            staff
+            staffWithShiftCounts
             // TODO: assign and sort by weighting according existing number of shifts, shift preferences etc.
-            |> Array.sortBy (fun s -> s.Shifts.Length)
+            |> Array.sortBy (fun smsc -> snd smsc)
             |> Array.truncate shift.MaximumNumberOfStaff
 
         [|
             for i in 0..shifts.Length - 1 ->
                 let picked = pick shifts.[i]
+                // TODO: make this code more elegant / performant? Maybe use more mutability.
+                for smsc in picked do
+                    let ix = staffWithShiftCounts |> Array.findIndex (fun curr -> curr = smsc)
+                    staffWithShiftCounts.[ix] <- fst staffWithShiftCounts.[ix], snd staffWithShiftCounts.[ix] + 1
 
-                for sm in picked do
-                    let ix = staff |> Array.findIndex (fun curr -> curr = sm)
-                    staff.[ix] <- {staff.[ix] with Shifts = Array.append staff.[ix].Shifts [|shifts.[i]|]}
-
-                { shifts.[i] with Staff = picked }
+                { shifts.[i] with Staff = picked |> Array.map (fun smsc -> fst smsc) }
         |]
 
     let calculateCost shifts =
