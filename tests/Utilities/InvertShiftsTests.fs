@@ -158,3 +158,75 @@ let ``inverts three shifts with staff overlap correctly``() =
     |]
 
     test <@ sortAll (invertShifts shifts) = sortAll expected @>
+
+[<Fact>]
+let ``inverts shifts with staff that in turn have shifts that are inconsistent with the shifts they are on correctly``() =
+    let shifts = [|
+        {
+            assassins with Staff =
+                            [|
+                                {
+                                    nancey with Shifts =
+                                                [|
+                                                    assassins
+                                                    dixie
+                                                |]
+                                }
+                                {
+                                    britte with Shifts =
+                                                [|
+                                                    assassins
+                                                    dixie
+                                                |]
+                                }
+                            |]
+        }
+        {
+            dixie with Staff =
+                        [|
+                            {
+                                cheryl with Shifts =
+                                            [|
+                                                assassins
+                                            |]
+                            }
+                            {
+                                britte with Shifts =
+                                            [|
+                                                priscilla
+                                            |]
+                            }
+                            {
+                                nancey with Shifts =
+                                            [|
+                                                priscilla
+                                            |]
+                            }
+                        |]
+        }
+    |]
+
+    let expected = [|
+        {
+            nancey with Shifts =
+                        [|
+                            assassins
+                            dixie
+                        |]
+        }
+        {
+            britte with Shifts =
+                        [|
+                            assassins
+                            dixie
+                        |]
+        }
+        {
+            cheryl with Shifts =
+                        [|
+                            dixie
+                        |]
+        }
+    |]
+
+    test <@ sortAll (invertShifts shifts) = sortAll expected @>
