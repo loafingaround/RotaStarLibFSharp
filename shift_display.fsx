@@ -6,19 +6,17 @@
 open XPlot.GoogleCharts
 open Scheduling.Types
 
-// TODO: fix this: it's showing crosses (as opposed to ticks) everywhere
-// Maybe it was relying on staff on shifts from initial schedule
-// calculation in turn having shifts (which they don't now)?
 let getStaffShiftsTable shifts staff =
     let staffShiftsMatrix =
         shifts
         |> Array.map (fun s ->
             staff
             |> Array.map (fun sm ->
-                let working =
-                    sm.Shifts
-                    |> Array.exists (fun sh -> sh.Id = s.Id)
-                sprintf "%s %s" sm.Forename sm.Surname, working))
+                let name = sprintf "%s %s" sm.Forename sm.Surname
+                let isWorking =
+                    s.Staff
+                    |> Array.exists (fun ssm -> ssm.Id = sm.Id)
+                name, isWorking))
 
     staffShiftsMatrix
     |> Chart.Table
