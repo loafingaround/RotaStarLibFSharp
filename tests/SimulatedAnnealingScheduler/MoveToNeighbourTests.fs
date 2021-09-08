@@ -174,7 +174,7 @@ let ``Changes expected staff member for 2 shifts including 1 with 1 staff member
             { dixie with Staff = [| |] }
         |]
 
-    let nextRandom = getNextRandomFunc2 [|0; 0; 1|]
+    let nextRandom = getNextRandomFuncFromSeq [|0; 0; 1|]
 
     let actual = moveToNeighbour nextRandom shifts staff
 
@@ -194,7 +194,7 @@ let ``Changes expected staff member for 2 shifts each with 1 staff member and 2 
             { dixie with Staff = [| cheryl |] }
         |]
 
-    let nextRandom = getNextRandomFunc2 [|1; 0; 1|]
+    let nextRandom = getNextRandomFuncFromSeq [|1; 0; 1|]
 
     let actual = moveToNeighbour nextRandom shifts staff
 
@@ -214,7 +214,7 @@ let ``Changes expected staff member for 2 shifts including 1 with 1 staff and 1 
             { dixie with Staff = [| lola; mary |] }
         |]
 
-    let nextRandom = getNextRandomFunc2 [|1; 1; 1|]
+    let nextRandom = getNextRandomFuncFromSeq [|1; 1; 1|]
 
     let actual = moveToNeighbour nextRandom shifts staff
 
