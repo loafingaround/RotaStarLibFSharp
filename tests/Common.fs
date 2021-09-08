@@ -98,15 +98,13 @@ let mary =
 
 // utility
 
-let getNextRandomFunc (sequence: 'a seq) =
-    let enumerator = sequence.GetEnumerator()
-    fun (_, _) ->
+let getNextRandomFuncFromSeq (sequence: int seq) =
+    let infiniteSequence = seq { while true do yield! sequence }
+    let enumerator = infiniteSequence.GetEnumerator()
+    fun max ->
         enumerator.MoveNext() |> ignore
-        enumerator.Current
-
-// TODO: remove getNextRandomFunc and rename this as getNextRandomFunc when we've got rid of dependent code 
-let getNextRandomFunc2 (sequence: 'a seq) =
-    let enumerator = sequence.GetEnumerator()
-    fun _ ->
-        enumerator.MoveNext() |> ignore
-        enumerator.Current
+        let mutable r = enumerator.Current
+        while r >= max do
+            enumerator.MoveNext() |> ignore
+            r <- enumerator.Current
+        r
