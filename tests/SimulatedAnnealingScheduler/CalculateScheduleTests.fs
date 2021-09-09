@@ -6,7 +6,6 @@ open Swensen.Unquote
 open Scheduling.SimulatedAnnealingScheduler
 open Scheduling.Types
 open Common
-open Utilities
 
 let nextDummyRandom _ =
     0
@@ -64,8 +63,9 @@ let ``Does not return shifts with same staff more than once on shift``() =
             { priscilla with MaximumNumberOfStaff = 1 }
         |]
 
-    // TODO: substitute nextRandom for function producing infinite repeating sequence
-    // e.g. see https://stackoverflow.com/questions/8919006/infinite-sequence-with-repeating-elements
+    let rand = Random(0)
+    let nextRandom = fun max -> rand.Next(max)
+
     match calculateSchedule nextRandom shifts staff with
     | Ok schedule ->
         let withDuplicates =
