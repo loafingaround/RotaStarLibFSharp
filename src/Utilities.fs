@@ -5,10 +5,9 @@ open System.IO
 open Scheduling.Types
 open System.Collections.Generic
 
-// convenience function for clients of library
-let rand = Random();
+let private rand = Random()
 let nextRandom maxExcl =
-    rand.Next(0, maxExcl)
+    rand.Next(maxExcl)
 
 let invertShifts shifts =
     shifts
