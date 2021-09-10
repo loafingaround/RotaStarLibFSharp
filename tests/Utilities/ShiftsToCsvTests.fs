@@ -18,8 +18,8 @@ let ``converts single shift no staff correctly``() =
         { priscilla with Staff = Array.empty }
     |]
 
-    test <@ (shiftsToCsv shifts) = """
-Priscilla queen of the desert""" @>
+    test <@ (shiftsToCsv shifts) = "\r\n" +
+            "Priscilla queen of the desert" @>
 
 [<Fact>]
 let ``converts single shift single staff member correctly``() =
@@ -27,8 +27,8 @@ let ``converts single shift single staff member correctly``() =
         { priscilla with Staff = [| nancey |] }
     |]
 
-    test <@ (shiftsToCsv shifts) = """,Nancey Fahy
-Priscilla queen of the desert,X""" @>
+    test <@ (shiftsToCsv shifts) = ",Nancey Fahy\r\n" +
+            "Priscilla queen of the desert,X" @>
 
 [<Fact>]
 let ``converts single shift two staff correctly``() =
@@ -40,8 +40,8 @@ let ``converts single shift two staff correctly``() =
                             |] }
     |]
 
-    test <@ (shiftsToCsv shifts) = """,Nancey Fahy,Cheryl Pentha
-Priscilla queen of the desert,X,X""" @>
+    test <@ (shiftsToCsv shifts) = ",Nancey Fahy,Cheryl Pentha\r\n" +
+            "Priscilla queen of the desert,X,X" @>
 
 [<Fact>]
 let ``converts two shifts single staff member for 2nd shift correctly``() =
@@ -50,9 +50,9 @@ let ``converts two shifts single staff member for 2nd shift correctly``() =
         { dixie with Staff = [| nancey |] }
     |]
 
-    test <@ (shiftsToCsv shifts) = """,Nancey Fahy
-Priscilla queen of the desert,
-Dixie Swim Club,X""" @>
+    test <@ (shiftsToCsv shifts) = ",Nancey Fahy\r\n" +
+            "Priscilla queen of the desert,\r\n" +
+            "Dixie Swim Club,X" @>
 
 [<Fact>]
 let ``converts two shifts single staff member for both shifts correctly``() =
@@ -61,9 +61,9 @@ let ``converts two shifts single staff member for both shifts correctly``() =
         { dixie with Staff = [| nancey |] }
     |]
 
-    test <@ (shiftsToCsv shifts) = """,Nancey Fahy
-Priscilla queen of the desert,X
-Dixie Swim Club,X""" @>
+    test <@ (shiftsToCsv shifts) = ",Nancey Fahy\r\n" +
+            "Priscilla queen of the desert,X\r\n" +
+            "Dixie Swim Club,X" @>
 
 [<Fact>]
 let ``converts two shifts two staff with one shift each correctly``() =
@@ -72,9 +72,9 @@ let ``converts two shifts two staff with one shift each correctly``() =
         { dixie with Staff = [| nancey |] }
     |]
 
-    test <@ (shiftsToCsv shifts) = """,Britte Lowery,Nancey Fahy
-Priscilla queen of the desert,X,
-Dixie Swim Club,,X""" @>
+    test <@ (shiftsToCsv shifts) = ",Britte Lowery,Nancey Fahy\r\n" +
+            "Priscilla queen of the desert,X,\r\n" +
+            "Dixie Swim Club,,X" @>
 
 [<Fact>]
 let ``converts three shifts with staff overlap correctly``() =
@@ -102,7 +102,7 @@ let ``converts three shifts with staff overlap correctly``() =
         }
     |]
 
-    test <@ (shiftsToCsv shifts) = """,Nancey Fahy,Cheryl Pentha,Britte Lowery
-Assassins,X,X,
-Dixie Swim Club,,X,X
-Priscilla queen of the desert,X,,X""" @>
+    test <@ (shiftsToCsv shifts) = ",Nancey Fahy,Cheryl Pentha,Britte Lowery\r\n" +
+            "Assassins,X,X,\r\n" +
+            "Dixie Swim Club,,X,X\r\n" +
+            "Priscilla queen of the desert,X,,X" @>

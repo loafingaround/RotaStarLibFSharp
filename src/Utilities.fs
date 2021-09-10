@@ -60,7 +60,7 @@ let shiftsToCsv shifts =
     let mutable csv = ""
     for kvp in staff do csv <- csv + "," + kvp.Value
     for kvp in shiftLines do
-        csv <- csv + "\n" + kvp.Key + kvp.Value
+        csv <- csv + "\r\n" + kvp.Key + kvp.Value
     csv
 
 let shiftsToCsvFile shifts filePath =
