@@ -201,7 +201,7 @@ let ``Changes expected staff member for 2 shifts each with 1 staff member and 2 
     test <@ actual = expected @>
 
 [<Fact>]
-let ``Changes expected staff member for 2 shifts including 1 with 1 staff and 1 with 2 staff members and 2 available staff members``() =
+let ``Changes expected staff member for 2 shifts including 1 with 1 staff member and 1 with 2 staff members and 2 available staff members``() =
     let shifts = [|
             { assassins with Staff = [| britte |] }
             { dixie with Staff = [| lola; cheryl |] }
@@ -215,6 +215,24 @@ let ``Changes expected staff member for 2 shifts including 1 with 1 staff and 1 
         |]
 
     let nextRandom = getNextRandomFuncFromSeq [|1; 1; 1|]
+
+    let actual = moveToNeighbour nextRandom shifts staff
+
+    test <@ actual = expected @>
+
+[<Fact>]
+let ``Does not duplicate staff members on shift for 1 shift with 2 staff members and 2 available staff members with 1 of them matching``() =
+    let shifts = [|
+            { assassins with Staff = [| britte; mary |] }
+        |]
+
+    let staff = [| mary; cheryl |]
+
+    let expected = [|
+            { assassins with Staff = [| cheryl; mary |] }
+        |]
+
+    let nextRandom = getNextRandomFuncFromSeq [|0; 0; 0; 1|]
 
     let actual = moveToNeighbour nextRandom shifts staff
 

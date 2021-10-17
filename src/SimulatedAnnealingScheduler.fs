@@ -31,7 +31,7 @@ module SimulatedAnnealingScheduler =
     let calculateCost shifts =
         calculateVariance calculateMeanShiftsPerStaffMember shifts
 
-    let moveToNeighbour nextRandom shifts staff =
+    let moveToNeighbour nextRandom shifts (staff: StaffMember[]) =
         match staff with
         | [||] ->
             shifts
@@ -44,14 +44,23 @@ module SimulatedAnnealingScheduler =
             | [||] ->
                 shifts
             | _ ->
+                // TODO: possibly we should clone every shift object as well to ensure the
+                // Staff on input shifts cannot possibly be modified via the output shifts
+                // but we plan to use an immutable collections for Staff anyway
                 let shiftsCopy = Array.copy shifts
                 let shiftIndicesIx = nextRandom (Array.length shiftsWithStaffIndices)
                 let shiftIx = shiftsWithStaffIndices.[shiftIndicesIx]
-                let shiftCopy =  { shiftsCopy.[shiftIx] with Staff = shiftsCopy.[shiftIx].Staff }
-                let shiftStaffMemberIx = nextRandom (Array.length shiftCopy.Staff)
-                let staffMemberIx = nextRandom (Array.length staff)
-                shiftCopy.Staff.[shiftStaffMemberIx] <- staff.[staffMemberIx]
-                shiftsCopy
+                let shiftCopy =  { shiftsCopy.[shiftIx] with Staff = Array.copy shiftsCopy.[shiftIx].Staff }
+                let nonMatchingStaff = staff |> Array.filter (fun sm -> not (shiftCopy.Staff |> Array.exists (fun sm2 -> sm.Id = sm2.Id)))
+                match nonMatchingStaff with
+                | [||] ->
+                    shiftsCopy
+                | _ ->
+                    let shiftStaffMemberIx = nextRandom (Array.length shiftCopy.Staff)
+                    let staffMemberIx = nonMatchingStaff |> Array.length |> nextRandom
+                    shiftCopy.Staff.[shiftStaffMemberIx] <- nonMatchingStaff.[staffMemberIx]
+                    shiftsCopy.[shiftIx] <- shiftCopy
+                    shiftsCopy
 
     let satisfiesHardConstraints shifts =
         // TODO: include possibility of same staff member on shift more than once
