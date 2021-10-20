@@ -237,3 +237,21 @@ let ``Does not duplicate staff members on shift for 1 shift with 2 staff members
     let actual = moveToNeighbour nextRandom shifts staff
 
     test <@ actual = expected @>
+
+[<Fact>]
+let ``Does not swap staff member on shift with same staff from available staff members``() =
+    let shifts = [|
+            { assassins with Staff = [| britte |] }
+        |]
+
+    let staff = [| britte; cheryl |]
+
+    let expected = [|
+            { assassins with Staff = [| cheryl |] }
+        |]
+
+    let nextRandom = getNextRandomFuncFromSeq [|0; 0; 0; 1|]
+
+    let actual = moveToNeighbour nextRandom shifts staff
+
+    test <@ actual = expected @>
